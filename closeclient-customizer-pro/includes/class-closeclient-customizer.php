@@ -35,6 +35,13 @@ class CLOSECLIENT_CUSTOMIZER {
 			true
 		);
 
+		wp_enqueue_style(
+			'closeclient-builder-customizer',
+			CCP_PLUGIN_URL . 'assets/css/builder-customizer.css',
+			array(),
+			CCP_VERSION
+		);
+
 		wp_enqueue_script(
 			'closeclient-builder-preview',
 			CCP_PLUGIN_URL . 'assets/js/builder-preview.js',
@@ -501,6 +508,25 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_panel( 'closeclient_header_builder_panel', array(
 			'title'    => __( 'Header Builder', 'closeclient-customizer-pro' ),
 			'priority' => 20,
+		) );
+
+		$wp_customize->add_section( 'closeclient_header_options_section', array(
+			'title' => __( 'Options', 'closeclient-customizer-pro' ),
+			'panel' => 'closeclient_header_builder_panel',
+		) );
+
+		$wp_customize->add_setting( 'closeclient_header_sticky', array( 'default' => false, 'sanitize_callback' => 'wp_validate_boolean' ) );
+		$wp_customize->add_control( 'closeclient_header_sticky', array(
+			'label' => __( 'Enable Sticky Header', 'closeclient-customizer-pro' ),
+			'section' => 'closeclient_header_options_section',
+			'type' => 'checkbox',
+		) );
+
+		$wp_customize->add_setting( 'closeclient_header_transparent', array( 'default' => false, 'sanitize_callback' => 'wp_validate_boolean' ) );
+		$wp_customize->add_control( 'closeclient_header_transparent', array(
+			'label' => __( 'Enable Transparent Header', 'closeclient-customizer-pro' ),
+			'section' => 'closeclient_header_options_section',
+			'type' => 'checkbox',
 		) );
 
 		$wp_customize->add_section( 'closeclient_header_builder_section', array(
