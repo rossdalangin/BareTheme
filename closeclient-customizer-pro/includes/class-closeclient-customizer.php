@@ -21,15 +21,6 @@ class CLOSECLIENT_CUSTOMIZER {
 		add_action( 'customize_register', array( $this, 'register_customize_settings' ) );
 		add_action( 'customize_preview_init', array( $this, 'enqueue_customizer_preview_scripts' ) );
 		add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_customizer_control_scripts' ) );
-		add_action( 'customize_register', array( $this, 'register_control_types' ) );
-	}
-
-	/**
-	 * Register control types.
-	 */
-	public function register_control_types( $wp_customize ) {
-		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-builder-control.php';
-		$wp_customize->register_control_type( 'CLOSECLIENT_Builder_Control' );
 	}
 
 	/**
@@ -165,7 +156,7 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $typography_controls as $id => $control ) {
 			// Add Setting.
-			$sanitize_callback = ( $control['type'] === 'text' ) ? 'sanitize_text_field' : 'is_numeric';
+			$sanitize_callback = ( $control['type'] === 'text' ) ? 'sanitize_text_field' : 'floatval';
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
@@ -226,7 +217,7 @@ class CLOSECLIENT_CUSTOMIZER {
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
-				'sanitize_callback' => 'is_numeric',
+				'sanitize_callback' => 'floatval',
 			) );
 
 			// Add Control.
@@ -287,7 +278,7 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $border_controls as $id => $control ) {
 			// Add Setting.
-			$sanitize_callback = ( $id === 'ccd_border_color' ) ? 'sanitize_hex_color' : ( $control['type'] === 'select' ? 'sanitize_text_field' : 'is_numeric' );
+			$sanitize_callback = ( $id === 'ccd_border_color' ) ? 'sanitize_hex_color' : ( $control['type'] === 'select' ? 'sanitize_text_field' : 'floatval' );
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
@@ -349,7 +340,7 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $shadow_controls as $id => $control ) {
 			// Add Setting.
-			$sanitize_callback = ( $id === 'ccd_shadow_color' ) ? 'sanitize_text_field' : 'is_numeric'; // Using sanitize_text_field for rgba
+			$sanitize_callback = ( $id === 'ccd_shadow_color' ) ? 'sanitize_text_field' : 'floatval'; // Using sanitize_text_field for rgba
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
@@ -399,7 +390,7 @@ class CLOSECLIENT_CUSTOMIZER {
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
-				'sanitize_callback' => 'is_numeric',
+				'sanitize_callback' => 'floatval',
 			) );
 
 			// Add Control.
@@ -436,7 +427,7 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $primary_button_controls as $id => $control ) {
 			$wp_customize->add_setting( $id, array(
-				'default' => $control['default'], 'transport' => 'postMessage', 'sanitize_callback' => $control['type'] === 'color' ? 'sanitize_hex_color' : 'is_numeric',
+				'default' => $control['default'], 'transport' => 'postMessage', 'sanitize_callback' => $control['type'] === 'color' ? 'sanitize_hex_color' : 'floatval',
 			) );
 			if ( $control['type'] === 'color' ) {
 				$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array( 'label' => $control['label'], 'section' => 'closeclient_buttons_section' ) ) );
@@ -463,7 +454,7 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $secondary_button_controls as $id => $control ) {
 			$wp_customize->add_setting( $id, array(
-				'default' => $control['default'], 'transport' => 'postMessage', 'sanitize_callback' => $control['type'] === 'color' ? 'sanitize_hex_color' : 'is_numeric',
+				'default' => $control['default'], 'transport' => 'postMessage', 'sanitize_callback' => $control['type'] === 'color' ? 'sanitize_hex_color' : 'floatval',
 			) );
 			if ( $control['type'] === 'color' ) {
 				$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array( 'label' => $control['label'], 'section' => 'closeclient_buttons_section' ) ) );
@@ -491,7 +482,7 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $form_controls as $id => $control ) {
 			$wp_customize->add_setting( $id, array(
-				'default' => $control['default'], 'transport' => 'postMessage', 'sanitize_callback' => $control['type'] === 'color' ? 'sanitize_hex_color' : 'is_numeric',
+				'default' => $control['default'], 'transport' => 'postMessage', 'sanitize_callback' => $control['type'] === 'color' ? 'sanitize_hex_color' : 'floatval',
 			) );
 			if ( $control['type'] === 'color' ) {
 				$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array( 'label' => $control['label'], 'section' => 'closeclient_forms_section' ) ) );
@@ -501,6 +492,10 @@ class CLOSECLIENT_CUSTOMIZER {
 		}
 
 		// == Header & Footer Builder Panels ==
+
+		// Load and register the builder control.
+		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-builder-control.php';
+		$wp_customize->register_control_type( 'CLOSECLIENT_Builder_Control' );
 
 		// Add Header Builder Panel.
 		$wp_customize->add_panel( 'closeclient_header_builder_panel', array(
