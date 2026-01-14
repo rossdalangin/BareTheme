@@ -106,6 +106,12 @@
 			control.container.on( 'click', '.settings-icon', function() {
 				control.openModuleSettings( $(this).closest('.module') );
 			});
+
+			// Handle opening the style panel
+			control.container.on( 'click', '.style-icon', function() {
+				console.log('Style icon clicked!');
+				// Future: Dynamically create and focus on a new Customizer section for this module.
+			});
 		},
 
 		getColumnLayoutSelector: function( currentLayout ) {
@@ -169,6 +175,7 @@
 							module.type +
 							'<span class="remove-module">x</span>' +
 							'<span class="dashicons dashicons-admin-generic settings-icon"></span>' +
+							'<span class="dashicons dashicons-admin-customizer style-icon"></span>' +
 							'<div class="visibility-controls">' +
 							'<span class="dashicons dashicons-desktop" data-device="desktop"></span>' +
 							'<span class="dashicons dashicons-tablet" data-device="tablet"></span>' +
@@ -219,11 +226,11 @@
 
 						var moduleData = {
 							type: moduleEl.data('type'),
-							hide_on: hideOn
+							hide_on: hideOn,
+							id: 'module-' + Math.random().toString(36).substr(2, 9)
 						};
 
 						// Get existing settings to preserve them.
-						var layout = control.getLayout();
 						var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');
 						var colIndex = moduleEl.parent().data('col');
 						var moduleIndex = moduleEl.index();
@@ -259,8 +266,14 @@
 				form.append('<label>Text: <input type="text" name="text" value="' + (moduleData.text || '') + '"></label><br>');
 				form.append('<label>Link: <input type="text" name="link" value="' + (moduleData.link || '') + '"></label>');
 			} else if ( moduleData.type === 'social_icons' ) {
-				// In a real app, this would be a repeater field.
-				form.append('<p>Social icon settings would go here.</p>');
+				var networks = ['facebook', 'twitter', 'instagram', 'linkedin'];
+				networks.forEach(function(network) {
+					var_val = (moduleData[network] || '');
+					form.append('<label>' + network.charAt(0).toUpperCase() + network.slice(1) + ': <input type="text" name="' + network + '" value="' + var_val + '"></label><br>');
+				});
+			} else if ( moduleData.type === 'announcement_bar' ) {
+				form.append('<label>Text: <input type="text" name="text" value="' + (moduleData.text || '') + '"></label><br>');
+				form.append('<label>Link: <input type="text" name="link" value="' + (moduleData.link || '') + '"></label>');
 			}
 
 			modal.show();

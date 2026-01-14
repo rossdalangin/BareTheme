@@ -38,7 +38,9 @@ function closeclient_render_header_builder() {
 					}
 				}
 
-				echo '<div class="' . esc_attr( $classes ) . '">';
+				$module_id = ! empty( $module['id'] ) ? 'id="' . esc_attr( $module['id'] ) . '"' : '';
+
+				echo '<div ' . $module_id . ' class="' . esc_attr( $classes ) . '">';
 				if ( function_exists( 'closeclient_render_module_' . $module['type'] ) ) {
 					call_user_func( 'closeclient_render_module_' . $module['type'], $module );
 				}

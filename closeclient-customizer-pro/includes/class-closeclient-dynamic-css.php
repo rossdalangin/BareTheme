@@ -143,6 +143,9 @@ class CLOSECLIENT_DYNAMIC_CSS {
 			$css .= esc_attr( $variable ) . ': ' . esc_attr( $value ) . $unit . ';';
 		}
 
+		// -- Individual Module Styles --
+		// This will be expanded upon in the future.
+
 		$css .= '}';
 
 		echo '<style type="text/css" id="closeclient-customizer-pro-dynamic-css">' . wp_strip_all_tags( $css ) . '</style>';

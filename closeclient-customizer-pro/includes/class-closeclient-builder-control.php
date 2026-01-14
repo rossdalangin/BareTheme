@@ -29,6 +29,7 @@ class CLOSECLIENT_Builder_Control extends WP_Customize_Control {
 				<div class="module" data-type="button"><?php esc_html_e( 'Button', 'closeclient-customizer-pro' ); ?></div>
 				<div class="module" data-type="social_icons"><?php esc_html_e( 'Social Icons', 'closeclient-customizer-pro' ); ?></div>
 				<div class="module" data-type="search"><?php esc_html_e( 'Search', 'closeclient-customizer-pro' ); ?></div>
+				<div class="module" data-type="announcement_bar"><?php esc_html_e( 'Announcement Bar', 'closeclient-customizer-pro' ); ?></div>
 			</div>
 			<div class="builder-area">
 				<!-- Rows will be rendered here by JS -->
