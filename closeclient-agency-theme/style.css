@@ -50,3 +50,61 @@ h1 {
 h2 {
 	font-size: var(--ccd-h2-font-size, 2rem);
 }
+
+/*--------------------------------------------------------------
+# Header & Footer Builder
+--------------------------------------------------------------*/
+.header-builder-main,
+.footer-builder-main {
+	width: 100%;
+}
+
+.h-row,
+.f-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: var(--ccd-spacing-s, 0.5rem) 0;
+}
+
+.h-col,
+.f-col {
+	display: flex;
+	align-items: center;
+	flex-grow: 1;
+}
+
+.h-col:nth-child(2),
+.f-col:nth-child(2) {
+	justify-content: center;
+}
+
+.h-col:nth-child(3),
+.f-col:nth-child(3) {
+	justify-content: flex-end;
+}
+
+/* -- Builder Modules -- */
+.builder-module-logo a {
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.builder-module-navigation ul {
+	display: flex;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.builder-module-navigation li {
+	margin: 0 var(--ccd-spacing-m, 1rem);
+}
+
+.ccd-button-primary {
+	background-color: var(--ccd-primary-btn-bg-color, #0073e6);
+	color: var(--ccd-primary-btn-text-color, #ffffff);
+	padding: var(--ccd-primary-btn-padding-y, 0.75rem) var(--ccd-primary-btn-padding-x, 1.5rem);
+	border-radius: var(--ccd-primary-btn-border-radius, 0.5rem);
+	display: inline-block;
+}

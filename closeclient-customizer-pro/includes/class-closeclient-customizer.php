@@ -20,6 +20,37 @@ class CLOSECLIENT_CUSTOMIZER {
 	public function __construct() {
 		add_action( 'customize_register', array( $this, 'register_customize_settings' ) );
 		add_action( 'customize_preview_init', array( $this, 'enqueue_customizer_preview_scripts' ) );
+		add_action( 'customize_controls_enqueue_scripts', array( $this, 'enqueue_customizer_control_scripts' ) );
+		add_action( 'customize_register', array( $this, 'register_control_types' ) );
+	}
+
+	/**
+	 * Register control types.
+	 */
+	public function register_control_types( $wp_customize ) {
+		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-builder-control.php';
+		$wp_customize->register_control_type( 'CLOSECLIENT_Builder_Control' );
+	}
+
+	/**
+	 * Enqueue customizer control scripts.
+	 */
+	public function enqueue_customizer_control_scripts() {
+		wp_enqueue_script(
+			'closeclient-builder-customizer',
+			CCP_PLUGIN_URL . 'assets/js/builder-customizer.js',
+			array( 'jquery', 'customize-controls', 'jquery-ui-sortable' ),
+			CCP_VERSION,
+			true
+		);
+
+		wp_enqueue_script(
+			'closeclient-builder-preview',
+			CCP_PLUGIN_URL . 'assets/js/builder-preview.js',
+			array( 'jquery', 'customize-preview' ),
+			CCP_VERSION,
+			true
+		);
 	}
 
 	/**
@@ -468,6 +499,54 @@ class CLOSECLIENT_CUSTOMIZER {
 				$wp_customize->add_control( $id, array( 'label' => $control['label'], 'section' => 'closeclient_forms_section', 'type' => 'number', 'input_attrs' => array('step' => '0.1') ) );
 			}
 		}
+
+		// == Header & Footer Builder Panels ==
+
+		// Add Header Builder Panel.
+		$wp_customize->add_panel( 'closeclient_header_builder_panel', array(
+			'title'    => __( 'Header Builder', 'closeclient-customizer-pro' ),
+			'priority' => 20,
+		) );
+
+		$wp_customize->add_section( 'closeclient_header_builder_section', array(
+			'title' => __( 'Layout', 'closeclient-customizer-pro' ),
+			'panel' => 'closeclient_header_builder_panel',
+		) );
+
+		$wp_customize->add_setting( 'closeclient_header_layout', array(
+			'default'   => '',
+			'transport' => 'postMessage', // Will be handled by JS later
+			'sanitize_callback' => 'wp_kses_post',
+		) );
+
+		$wp_customize->add_control( new CLOSECLIENT_Builder_Control( $wp_customize, 'closeclient_header_layout', array(
+			'label'    => __( 'Header Layout', 'closeclient-customizer-pro' ),
+			'section'  => 'closeclient_header_builder_section',
+			'builder_type' => 'header',
+		) ) );
+
+		// Add Footer Builder Panel.
+		$wp_customize->add_panel( 'closeclient_footer_builder_panel', array(
+			'title'    => __( 'Footer Builder', 'closeclient-customizer-pro' ),
+			'priority' => 21,
+		) );
+
+		$wp_customize->add_section( 'closeclient_footer_builder_section', array(
+			'title' => __( 'Layout', 'closeclient-customizer-pro' ),
+			'panel' => 'closeclient_footer_builder_panel',
+		) );
+
+		$wp_customize->add_setting( 'closeclient_footer_layout', array(
+			'default'   => '',
+			'transport' => 'postMessage',
+			'sanitize_callback' => 'wp_kses_post',
+		) );
+
+		$wp_customize->add_control( new CLOSECLIENT_Builder_Control( $wp_customize, 'closeclient_footer_layout', array(
+			'label'    => __( 'Footer Layout', 'closeclient-customizer-pro' ),
+			'section'  => 'closeclient_footer_builder_section',
+			'builder_type' => 'footer',
+		) ) );
 	}
 }
 
