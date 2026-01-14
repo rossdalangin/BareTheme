@@ -1,0 +1,52 @@
+/*
+Theme Name: CLOSECLIENT AGENCY THEME
+Author: Jules
+Author URI: https://example.com/
+Description: A builder-ready theme for agencies.
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: closeclient-agency-theme
+*/
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Generic
+	- Body
+	- Links
+	- Headings
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+# Generic
+--------------------------------------------------------------*/
+body {
+	background-color: var(--ccd-bg-color, #FFFFFF);
+	color: var(--ccd-text-color, #333333);
+	font-family: var(--ccd-body-font-family, sans-serif);
+	font-size: var(--ccd-body-font-size, 1rem);
+	line-height: 1.5;
+}
+
+a {
+	color: var(--ccd-link-color, #0073e6);
+	text-decoration: none;
+}
+
+a:hover {
+	color: var(--ccd-link-hover-color, #005cb8);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--ccd-heading-font-family, sans-serif);
+	margin: 1.5em 0 0.5em;
+}
+
+h1 {
+	font-size: var(--ccd-h1-font-size, 2.5rem);
+}
+
+h2 {
+	font-size: var(--ccd-h2-font-size, 2rem);
+}
