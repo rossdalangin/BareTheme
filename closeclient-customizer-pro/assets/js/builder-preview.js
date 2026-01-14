@@ -1,17 +1,15 @@
 ( function( $, wp ) {
 	'use strict';
 
-	wp.customize( 'closeclient_header_layout', function( value ) {
-		value.bind( function( to ) {
-			// Just trigger a refresh for now. A full AJAX preview is more complex.
-			wp.customize.previewer.refresh();
-		} );
-	} );
+	wp.customize.preview.bind( 'update-module-style', function( data ) {
+		var styleId = 'module-style-' + data.moduleId;
+		var $style = $( '#' + styleId );
 
-	wp.customize( 'closeclient_footer_layout', function( value ) {
-		value.bind( function( to ) {
-			wp.customize.previewer.refresh();
-		} );
-	} );
+		if ( $style.length ) {
+			$style.replaceWith( data.style );
+		} else {
+			$('head').append( data.style );
+		}
+	});
 
 } )( jQuery, wp );

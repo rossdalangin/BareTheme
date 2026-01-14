@@ -109,8 +109,52 @@
 
 			// Handle opening the style panel
 			control.container.on( 'click', '.style-icon', function() {
-				console.log('Style icon clicked!');
-				// Future: Dynamically create and focus on a new Customizer section for this module.
+				var moduleEl = $(this).closest('.module');
+				var layout = control.getLayout();
+				var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');
+				var colIndex = moduleEl.parent().data('col');
+				var moduleIndex = moduleEl.index();
+				var moduleData = layout[rowIndex].columns[colIndex].modules[moduleIndex];
+
+				var sectionId = 'closeclient_module_' + moduleData.id;
+
+				// See if the section already exists
+				var section = wp.customize.section( sectionId );
+
+				if ( ! section ) {
+					// Create the section if it doesn't exist
+					section = new wp.customize.Section( sectionId, {
+						title: 'Style: ' + moduleData.type,
+						panel: control.params.panel,
+						priority: 100
+					});
+					wp.customize.section.add( section );
+				}
+
+				// Now you can add controls to this section.
+				if ( moduleData.type === 'button' ) {
+					// Background Color
+					var bgColorSetting = 'module_style_' + moduleData.id + '_bg_color';
+					wp.customize.add( new wp.customize.Setting( wp.customize, bgColorSetting, {
+						transport: 'postMessage'
+					}));
+					wp.customize.control.add( new wp.customize.ColorControl( wp.customize, bgColorSetting, {
+						label: 'Background Color',
+						section: sectionId,
+						settings: {
+							default: wp.customize.settings.settings[bgColorSetting],
+						}
+					}));
+
+					wp.customize(bgColorSetting, function( value ) {
+						value.bind( function( to ) {
+							var style = '<style>#' + moduleData.id + ' { background-color: ' + to + '; }</style>';
+							wp.customize.previewer.send( 'update-module-style', { moduleId: moduleData.id, style: style } );
+						});
+					});
+				}
+
+				section.focus();
 			});
 		},
 
@@ -226,18 +270,20 @@
 
 						var moduleData = {
 							type: moduleEl.data('type'),
-							hide_on: hideOn,
-							id: 'module-' + Math.random().toString(36).substr(2, 9)
+							hide_on: hideOn
 						};
 
 						// Get existing settings to preserve them.
 						var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');
 						var colIndex = moduleEl.parent().data('col');
 						var moduleIndex = moduleEl.index();
-						var existingModule = layout[rowIndex] && layout[rowIndex].columns[colIndex] && layout[rowIndex].columns[colIndex].modules[moduleIndex];
+						var existingModule = control.getLayout()[rowIndex] && control.getLayout()[rowIndex].columns[colIndex] && control.getLayout()[rowIndex].columns[colIndex].modules[moduleIndex];
 
-						if (existingModule) {
+						if (existingModule && existingModule.id) {
+							moduleData.id = existingModule.id;
 							$.extend(moduleData, existingModule);
+						} else {
+							moduleData.id = 'module-' + Math.random().toString(36).substr(2, 9);
 						}
 
 						col.modules.push(moduleData);
@@ -268,7 +314,7 @@
 			} else if ( moduleData.type === 'social_icons' ) {
 				var networks = ['facebook', 'twitter', 'instagram', 'linkedin'];
 				networks.forEach(function(network) {
-					var_val = (moduleData[network] || '');
+					var var_val = (moduleData[network] || '');
 					form.append('<label>' + network.charAt(0).toUpperCase() + network.slice(1) + ': <input type="text" name="' + network + '" value="' + var_val + '"></label><br>');
 				});
 			} else if ( moduleData.type === 'announcement_bar' ) {
