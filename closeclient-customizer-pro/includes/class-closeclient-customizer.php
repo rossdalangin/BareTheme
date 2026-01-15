@@ -557,17 +557,34 @@ class CLOSECLIENT_CUSTOMIZER {
             'section'  => 'closeclient_mobile_menu_section',
         ) ) );
 
-        // Page Content Section
-        $wp_customize->add_section( 'closeclient_page_content_section', array(
-            'title' => __( 'Page Content', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_theme_options_panel',
+        // Page Content Panel
+        $wp_customize->add_panel( 'closeclient_page_content_panel', array(
+            'title'    => __( 'Page Content', 'closeclient-customizer-pro' ),
+            'priority' => 20,
         ) );
 
         // Homepage Section
         $wp_customize->add_section( 'closeclient_homepage_section', array(
             'title' => __( 'Homepage', 'closeclient-customizer-pro' ),
-            'section' => 'closeclient_page_content_section',
+            'panel' => 'closeclient_page_content_panel',
         ) );
+
+        // -- Homepage Sections Order --
+        require_once dirname( __FILE__ ) . '/../inc/class-sorter-control.php';
+        $wp_customize->register_control_type( 'Sorter_Control' );
+        $wp_customize->add_setting( 'homepage_sections_order', array(
+            'default'   => json_encode( array( 'hero' => true, 'practice_areas' => true, 'testimonials' => true ) ),
+            'sanitize_callback' => 'wp_kses_post',
+        ) );
+        $wp_customize->add_control( new Sorter_Control( $wp_customize, 'homepage_sections_order', array(
+            'label'   => __( 'Homepage Sections', 'closeclient-customizer-pro' ),
+            'section' => 'closeclient_homepage_section',
+            'choices' => array(
+                'hero'           => __( 'Hero CTA', 'closeclient-customizer-pro' ),
+                'practice_areas' => __( 'Practice Areas', 'closeclient-customizer-pro' ),
+                'testimonials'   => __( 'Testimonials', 'closeclient-customizer-pro' ),
+            ),
+        ) ) );
 
         // -- Hero CTA --
         $wp_customize->add_setting( 'homepage_hero_heading', array( 'default' => __( 'Expert Legal Counsel for a Modern World', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
@@ -604,7 +621,7 @@ class CLOSECLIENT_CUSTOMIZER {
         // About Us Section
         $wp_customize->add_section( 'closeclient_about_us_section', array(
             'title' => __( 'About Us', 'closeclient-customizer-pro' ),
-            'section' => 'closeclient_page_content_section',
+            'panel' => 'closeclient_page_content_panel',
         ) );
 
         // -- Team Section --
@@ -625,7 +642,7 @@ class CLOSECLIENT_CUSTOMIZER {
         // Services Section
         $wp_customize->add_section( 'closeclient_services_section', array(
             'title' => __( 'Services', 'closeclient-customizer-pro' ),
-            'section' => 'closeclient_page_content_section',
+            'panel' => 'closeclient_page_content_panel',
         ) );
         $wp_customize->add_setting( 'services_archive_title', array( 'default' => __( 'Our Services', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
         $wp_customize->add_control( 'services_archive_title', array( 'label' => __( 'Services Archive Title', 'closeclient-customizer-pro' ), 'section' => 'closeclient_services_section', 'type' => 'text' ) );
@@ -633,7 +650,7 @@ class CLOSECLIENT_CUSTOMIZER {
         // Testimonials Section
         $wp_customize->add_section( 'closeclient_testimonials_section', array(
             'title' => __( 'Testimonials', 'closeclient-customizer-pro' ),
-            'section' => 'closeclient_page_content_section',
+            'panel' => 'closeclient_page_content_panel',
         ) );
         $wp_customize->add_setting( 'testimonials_archive_title', array( 'default' => __( 'What Our Clients Say', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
         $wp_customize->add_control( 'testimonials_archive_title', array( 'label' => __( 'Testimonials Archive Title', 'closeclient-customizer-pro' ), 'section' => 'closeclient_testimonials_section', 'type' => 'text' ) );

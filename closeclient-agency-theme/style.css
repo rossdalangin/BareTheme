@@ -128,7 +128,7 @@ h2 {
 # Mobile & Responsive
 --------------------------------------------------------------*/
 .menu-toggle {
-    display: none;
+    display: block;
     background: none;
     border: 1px solid;
     padding: 0.5em 1em;
@@ -136,9 +136,6 @@ h2 {
 }
 
 @media (max-width: 1024px) {
-    .menu-toggle {
-        display: block;
-    }
     .main-navigation ul {
         display: none;
     }
@@ -276,4 +273,9 @@ h2 {
     margin-bottom: 2rem;
     padding-bottom: 2rem;
     border-bottom: 1px solid var(--ccd-border-color);
+}
+
+.gallery-item img {
+    max-width: 100%;
+    height: auto;
 }
