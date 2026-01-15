@@ -593,11 +593,11 @@ class CLOSECLIENT_CUSTOMIZER {
             $testimonials_choices[ $testimonial->ID ] = $testimonial->post_title;
         }
         $wp_customize->add_setting( 'homepage_testimonials', array( 'default' => array(), 'sanitize_callback' => array( $this, 'sanitize_multi_select' ) ) );
-        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'homepage_testimonials', array(
+        require_once dirname( __FILE__ ) . '/../inc/class-multi-select-control.php';
+        $wp_customize->register_control_type( 'Multi_Select_Control' );
+        $wp_customize->add_control( new Multi_Select_Control( $wp_customize, 'homepage_testimonials', array(
             'label'       => __( 'Select Testimonials to Display', 'closeclient-customizer-pro' ),
             'section'     => 'closeclient_homepage_section',
-            'type'        => 'select',
-            'multiple'    => true,
             'choices'     => $testimonials_choices,
         ) ) );
 

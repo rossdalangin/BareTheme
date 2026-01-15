@@ -51,6 +51,7 @@ get_header();
         <h2 class="section-heading"><?php echo esc_html( get_theme_mod( 'homepage_testimonials_heading', 'What Our Clients Say' ) ); ?></h2>
         <?php
         $testimonial_ids = get_theme_mod( 'homepage_testimonials', array() );
+
         if ( ! empty( $testimonial_ids ) ) :
             $args = array(
                 'post_type'      => 'testimonials',
