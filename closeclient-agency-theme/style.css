@@ -170,3 +170,73 @@ h2 {
         font-size: 1.75rem;
     }
 }
+
+/*--------------------------------------------------------------
+# Page Sections
+--------------------------------------------------------------*/
+.hero-section {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+    text-align: center;
+    background-color: var(--ccd-brand-secondary);
+}
+
+.hero-heading {
+    font-size: var(--ccd-h1-font-size);
+}
+
+.hero-subheading {
+    font-size: 1.2rem;
+    color: var(--ccd-text-color);
+}
+
+.practice-areas-section,
+.team-section,
+.testimonials-section {
+    padding: 4rem 2rem;
+    max-width: var(--ccd-container-width-default);
+    margin: 0 auto;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: var(--ccd-h2-font-size);
+    margin-bottom: 2rem;
+}
+
+.practice-areas-grid,
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.practice-area-item {
+    border: 1px solid var(--ccd-border-color);
+    padding: 2rem;
+    border-radius: var(--ccd-border-radius-m);
+}
+
+.team-member {
+    text-align: center;
+}
+
+.team-member-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+}
+
+.testimonial-quote {
+    text-align: center;
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+.testimonial-quote cite {
+    display: block;
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-style: normal;
+}

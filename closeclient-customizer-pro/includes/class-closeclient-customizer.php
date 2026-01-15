@@ -112,16 +112,19 @@ class CLOSECLIENT_CUSTOMIZER {
 		) );
 
 		// Define Typography Controls
+        $google_fonts = $this->get_google_fonts();
 		$typography_controls = array(
 			'ccd_body_font_family' => array(
 				'label'   => __( 'Body Font Family', 'closeclient-customizer-pro' ),
-				'type'    => 'text',
-				'default' => '"Source Sans Pro", sans-serif',
+				'type'    => 'select',
+                'choices' => $google_fonts,
+				'default' => 'Source Sans Pro',
 			),
 			'ccd_heading_font_family' => array(
 				'label'   => __( 'Heading Font Family', 'closeclient-customizer-pro' ),
-				'type'    => 'text',
-				'default' => '"Playfair Display", serif',
+				'type'    => 'select',
+                'choices' => $google_fonts,
+				'default' => 'Playfair Display',
 			),
 			'ccd_body_font_size' => array(
 				'label'   => __( 'Body Font Size (rem)', 'closeclient-customizer-pro' ),
@@ -152,7 +155,11 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $typography_controls as $id => $control ) {
 			// Add Setting.
-			$sanitize_callback = ( $control['type'] === 'text' ) ? 'sanitize_text_field' : 'floatval';
+            $sanitize_callback = 'floatval';
+            if ( $control['type'] === 'select' ) {
+                $sanitize_callback = array( $this, 'sanitize_font_choice' );
+            }
+
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
@@ -638,6 +645,79 @@ class CLOSECLIENT_CUSTOMIZER {
             return $style;
         }
         return 'solid';
+    }
+
+    /**
+     * Get a list of popular Google Fonts.
+     *
+     * @return array
+     */
+    public function get_google_fonts() {
+        return array(
+            'Source Sans Pro' => 'Source Sans Pro',
+            'Open Sans' => 'Open Sans',
+            'Roboto' => 'Roboto',
+            'Lato' => 'Lato',
+            'Montserrat' => 'Montserrat',
+            'Oswald' => 'Oswald',
+            'Raleway' => 'Raleway',
+            'Merriweather' => 'Merriweather',
+            'Playfair Display' => 'Playfair Display',
+            'Poppins' => 'Poppins',
+            'Nunito' => 'Nunito',
+            'Lora' => 'Lora',
+            'Ubuntu' => 'Ubuntu',
+            'PT Sans' => 'PT Sans',
+            'Slabo 27px' => 'Slabo 27px',
+            'Roboto Condensed' => 'Roboto Condensed',
+            'Arimo' => 'Arimo',
+            'Noto Sans' => 'Noto Sans',
+            'Fjalla One' => 'Fjalla One',
+            'Indie Flower' => 'Indie Flower',
+            'Crimson Text' => 'Crimson Text',
+            'Josefin Sans' => 'Josefin Sans',
+            'Anton' => 'Anton',
+            'Vollkorn' => 'Vollkorn',
+            'Libre Baskerville' => 'Libre Baskerville',
+            'Arvo' => 'Arvo',
+            'Karla' => 'Karla',
+            'Fira Sans' => 'Fira Sans',
+            'PT Serif' => 'PT Serif',
+            'Oxygen' => 'Oxygen',
+            'Cabin' => 'Cabin',
+            'Lobster' => 'Lobster',
+            'Yanone Kaffeesatz' => 'Yanone Kaffeesatz',
+            'Pacifico' => 'Pacifico',
+            'Bree Serif' => 'Bree Serif',
+            'Quicksand' => 'Quicksand',
+            'Asap' => 'Asap',
+            'Inconsolata' => 'Inconsolata',
+            'Signika' => 'Signika',
+            'Dosis' => 'Dosis',
+            'Bitter' => 'Bitter',
+            'Exo 2' => 'Exo 2',
+            'Muli' => 'Muli',
+            'Abel' => 'Abel',
+            'Varela Round' => 'Varela Round',
+            'Cuprum' => 'Cuprum',
+            'Maven Pro' => 'Maven Pro',
+            'Play' => 'Play',
+            'Archivo Narrow' => 'Archivo Narrow',
+        );
+    }
+
+    /**
+     * Sanitize font choice.
+     *
+     * @param string $font The font to sanitize.
+     * @return string The sanitized font.
+     */
+    public function sanitize_font_choice( $font ) {
+        $fonts = $this->get_google_fonts();
+        if ( array_key_exists( $font, $fonts ) ) {
+            return $font;
+        }
+        return 'Source Sans Pro';
     }
 }
 

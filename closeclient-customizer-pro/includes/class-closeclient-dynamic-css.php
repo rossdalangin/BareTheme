@@ -18,7 +18,37 @@ class CLOSECLIENT_DYNAMIC_CSS {
 	 * Setup class.
 	 */
 	public function __construct() {
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_google_fonts' ) );
 		add_action( 'wp_head', array( $this, 'output_css' ) );
+	}
+
+	/**
+	 * Enqueue Google Fonts.
+	 */
+	public function enqueue_google_fonts() {
+		$body_font = get_theme_mod( 'ccd_body_font_family', 'Source Sans Pro' );
+		$heading_font = get_theme_mod( 'ccd_heading_font_family', 'Playfair Display' );
+
+		$font_families = array();
+		if ( $body_font ) {
+			$font_families[] = $body_font;
+		}
+		if ( $heading_font ) {
+			$font_families[] = $heading_font;
+		}
+
+        if ( empty( $font_families ) ) {
+            return;
+        }
+
+		$query_args = array(
+			'family' => urlencode( implode( '|', array_unique( $font_families ) ) ),
+			'subset' => urlencode( 'latin,latin-ext' ),
+		);
+
+		$fonts_url = add_query_arg( $query_args, 'https://fonts.googleapis.com/css' );
+
+		wp_enqueue_style( 'closeclient-google-fonts', $fonts_url, array(), null );
 	}
 
 	/**
