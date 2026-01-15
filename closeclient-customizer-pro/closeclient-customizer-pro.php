@@ -60,6 +60,7 @@ final class CLOSECLIENT_CUSTOMIZER_PRO {
 	public function includes() {
 		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-customizer.php';
 		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-dynamic-css.php';
+		require_once CCP_PLUGIN_DIR . 'includes/builder-render-functions.php';
 	}
 
 	/**

@@ -126,7 +126,5 @@ function closeclient_body_classes( $classes ) {
 add_filter( 'body_class', 'closeclient_body_classes' );
 
 /**
- * Load header and footer builder.
+ * The CLOSECLIENT CUSTOMIZER PRO plugin handles the header and footer builder.
  */
-require get_template_directory() . '/builder/header-builder.php';
-require get_template_directory() . '/builder/footer-builder.php';

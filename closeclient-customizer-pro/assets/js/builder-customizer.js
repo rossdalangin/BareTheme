@@ -4,6 +4,7 @@
 	wp.customize.controlConstructor['closeclient_builder'] = wp.customize.Control.extend({
 		ready: function() {
 			var control = this;
+            var styleClipboard = null;
 
 			// Make modules draggable
 			control.container.find( '.available-modules .module' ).draggable({
@@ -30,6 +31,7 @@
 
 			// Initial render
 			control.renderLayout();
+            control.renderGlobalComponents();
 
 			// Handle removing modules
 			control.container.on( 'click', '.remove-module', function() {
@@ -132,30 +134,301 @@
 				}
 
 				// Now you can add controls to this section.
-				if ( moduleData.type === 'button' ) {
-					// Background Color
-					var bgColorSetting = 'module_style_' + moduleData.id + '_bg_color';
-					wp.customize.add( new wp.customize.Setting( wp.customize, bgColorSetting, {
-						transport: 'postMessage'
-					}));
-					wp.customize.control.add( new wp.customize.ColorControl( wp.customize, bgColorSetting, {
-						label: 'Background Color',
-						section: sectionId,
-						settings: {
-							default: wp.customize.settings.settings[bgColorSetting],
-						}
-					}));
-
-					wp.customize(bgColorSetting, function( value ) {
-						value.bind( function( to ) {
-							var style = '<style>#' + moduleData.id + ' { background-color: ' + to + '; }</style>';
-							wp.customize.previewer.send( 'update-module-style', { moduleId: moduleData.id, style: style } );
-						});
-					});
-				}
+				control.addStyleControls( sectionId, moduleData );
 
 				section.focus();
 			});
+
+            // Handle copying styles
+            control.container.on( 'click', '.copy-style-icon', function() {
+                var moduleEl = $(this).closest('.module');
+                var layout = control.getLayout();
+                var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');
+                var colIndex = moduleEl.parent().data('col');
+                var moduleIndex = moduleEl.index();
+                var moduleData = layout[rowIndex].columns[colIndex].modules[moduleIndex];
+
+                if ( moduleData.style ) {
+                    styleClipboard = JSON.parse(JSON.stringify(moduleData.style)); // Deep copy
+                    alert('Styles copied!');
+                } else {
+                    alert('No styles to copy.');
+                }
+            });
+
+            // Handle pasting styles
+            control.container.on( 'click', '.paste-style-icon', function() {
+                if ( ! styleClipboard ) {
+                    alert('No styles in clipboard.');
+                    return;
+                }
+
+                var moduleEl = $(this).closest('.module');
+                var layout = control.getLayout();
+                var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');
+                var colIndex = moduleEl.parent().data('col');
+                var moduleIndex = moduleEl.index();
+                var moduleData = layout[rowIndex].columns[colIndex].modules[moduleIndex];
+
+                moduleData.style = JSON.parse(JSON.stringify(styleClipboard)); // Deep copy
+                control.setting.set( JSON.stringify( layout ) );
+
+                // Trigger preview update
+                var styleString = '';
+                for (var key in moduleData.style) {
+                    if (moduleData.style.hasOwnProperty(key)) {
+                        var cssKey = key.replace(/_/g, '-');
+                        styleString += cssKey + ': ' + moduleData.style[key] + '; ';
+                    }
+                }
+                var style = '<style>#module-' + moduleData.id + ' { ' + styleString + ' }</style>';
+                wp.customize.previewer.send( 'update-module-style', { moduleId: 'module-' + moduleData.id, style: style } );
+
+                alert('Styles pasted!');
+
+                // Optional: refresh the style panel if it's open for this module
+                var sectionId = 'closeclient_module_' + moduleData.id;
+                var section = wp.customize.section( sectionId );
+                if ( section && section.expanded() ) {
+                    control.addStyleControls( sectionId, moduleData );
+                }
+            });
+
+            // Handle saving a module as a global component
+            control.container.on( 'click', '.save-global-icon', function() {
+                var moduleEl = $(this).closest('.module');
+                var layout = control.getLayout();
+                var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');
+                var colIndex = moduleEl.parent().data('col');
+                var moduleIndex = moduleEl.index();
+                var moduleData = JSON.parse(JSON.stringify(layout[rowIndex].columns[colIndex].modules[moduleIndex])); // Deep copy
+
+                var name = prompt('Enter a name for your global component:');
+                if ( name ) {
+                    var globalId = 'global-' + Math.random().toString(36).substr(2, 9);
+
+                    var components = control.getGlobalComponents();
+                    delete moduleData.id; // Remove instance ID before saving
+                    components[globalId] = {
+                        name: name,
+                        module: moduleData
+                    };
+
+                    wp.customize.value('closeclient_global_components').set( JSON.stringify(components) );
+                    control.renderGlobalComponents();
+                    alert('Component saved!');
+                }
+            });
+
+            // Handle opening the conditionals modal
+            control.container.on( 'click', '.conditionals-icon', function() {
+                control.openConditionalsModal( $(this).closest('.module') );
+            });
+		},
+
+        openConditionalsModal: function( moduleEl ) {
+            var control = this;
+            var modal = control.container.find('.module-conditionals-modal');
+            var form = modal.find('.conditionals-form');
+            form.empty();
+
+            var layout = control.getLayout();
+            var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');
+            var colIndex = moduleEl.parent().data('col');
+            var moduleIndex = moduleEl.index();
+            var moduleData = layout[rowIndex].columns[colIndex].modules[moduleIndex];
+
+            var conditions = moduleData.conditions || [];
+
+            // UI for adding new conditions
+            var addConditionHtml = `
+                <div class="add-condition">
+                    <select class="condition-type">
+                        <option value="">-- Select Condition --</option>
+                        <option value="is_singular">Is Singular Page</option>
+                        <option value="is_user_logged_in">User is Logged In</option>
+                    </select>
+                    <button class="button add-condition-btn">Add</button>
+                </div>
+            `;
+            form.append(addConditionHtml);
+
+            // Display existing conditions
+            var existingConditionsHtml = '<div class="existing-conditions">';
+            conditions.forEach(function(condition, index) {
+                existingConditionsHtml += `
+                    <div class="condition" data-index="${index}">
+                        <span>${condition.type.replace(/_/g, ' ')}</span>
+                        <button class="remove-condition-btn">Remove</button>
+                    </div>
+                `;
+            });
+            existingConditionsHtml += '</div>';
+            form.append(existingConditionsHtml);
+
+            modal.show();
+
+            // Handle adding a condition
+            form.find('.add-condition-btn').on('click', function() {
+                var newType = form.find('.condition-type').val();
+                if ( newType ) {
+                    if (!moduleData.conditions) {
+                        moduleData.conditions = [];
+                    }
+                    moduleData.conditions.push({ type: newType });
+                    control.setting.set( JSON.stringify( layout ) );
+                    control.openConditionalsModal( moduleEl ); // Re-render the modal
+                }
+            });
+
+            // Handle removing a condition
+            form.find('.remove-condition-btn').on('click', function() {
+                var index = $(this).closest('.condition').data('index');
+                moduleData.conditions.splice(index, 1);
+                control.setting.set( JSON.stringify( layout ) );
+                control.openConditionalsModal( moduleEl ); // Re-render the modal
+            });
+
+            // Close modal
+			modal.find('.close').off('click').on('click', function() {
+				modal.hide();
+			});
+        },
+
+        getGlobalComponents: function() {
+			var components;
+			try {
+				components = JSON.parse( wp.customize.value('closeclient_global_components')() );
+			} catch (e) {
+				components = {};
+			}
+			return components;
+		},
+
+		renderGlobalComponents: function() {
+			var control = this;
+			var components = control.getGlobalComponents();
+			var listEl = control.container.find('.global-components-list');
+			listEl.empty();
+
+			for ( var id in components ) {
+				if ( components.hasOwnProperty( id ) ) {
+					var component = components[id];
+					var componentEl = $(
+						'<div class="module global-component" data-global-id="' + id + '">' +
+						component.name +
+						'</div>'
+					);
+					listEl.append(componentEl);
+				}
+			}
+
+			// Make global components draggable
+			listEl.find('.global-component').draggable({
+				helper: 'clone',
+				revert: 'invalid',
+				connectToSortable: '.builder-area .h-col, .builder-area .f-col',
+			});
+		},
+
+		addStyleControls: function( sectionId, moduleData ) {
+			var control = this;
+			var moduleType = moduleData.type;
+			var moduleId = moduleData.id;
+
+			// A more comprehensive set of style controls
+			var styleControls = {
+				button: [
+					{ id: 'background_color', label: 'Background Color', type: 'color' },
+					{ id: 'text_color', label: 'Text Color', type: 'color' },
+					{ id: 'padding', label: 'Padding (e.g., 10px 20px)', type: 'text' },
+					{ id: 'border_radius', label: 'Border Radius (e.g., 5px)', type: 'text' },
+					{ id: 'font_size', label: 'Font Size (e.g., 16px)', type: 'text' },
+					{ id: 'font_weight', label: 'Font Weight', type: 'select', choices: { '400': 'Normal', '700': 'Bold' } }
+				],
+				logo: [
+					{ id: 'text_color', label: 'Text Color', type: 'color' },
+					{ id: 'font_size', label: 'Font Size (e.g., 24px)', type: 'text' },
+					{ id: 'font_weight', label: 'Font Weight', type: 'select', choices: { '400': 'Normal', '700': 'Bold' } },
+					{ id: 'padding', label: 'Padding', type: 'text' }
+				],
+				navigation: [
+					{ id: 'link_color', label: 'Link Color', type: 'color' },
+					{ id: 'link_hover_color', label: 'Link Hover Color', type: 'color' },
+					{ id: 'font_size', label: 'Font Size', type: 'text' },
+					{ id: 'padding', label: 'Padding', type: 'text' },
+				],
+				social_icons: [
+					{ id: 'icon_color', label: 'Icon Color', type: 'color' },
+					{ id: 'icon_hover_color', label: 'Icon Hover Color', type: 'color' },
+					{ id: 'icon_size', label: 'Icon Size (e.g., 20px)', type: 'text' },
+				],
+				announcement_bar: [
+					{ id: 'background_color', label: 'Background Color', type: 'color' },
+					{ id: 'text_color', label: 'Text Color', type: 'color' },
+					{ id: 'font_size', label: 'Font Size', type: 'text' },
+				]
+			};
+
+			if ( styleControls[moduleType] ) {
+				// Clear any existing controls in the section first
+				var section = wp.customize.section( sectionId );
+				section.controls().forEach(function(control) {
+					wp.customize.control.remove(control.id);
+				});
+
+
+				styleControls[moduleType].forEach(function( styleControl ) {
+					var settingId = 'module_style_' + moduleId + '_' + styleControl.id;
+
+					// Use existing setting if possible, otherwise create it
+					var setting = wp.customize.instance(settingId);
+					if ( ! setting ) {
+						var initialValue = (moduleData.style && moduleData.style[styleControl.id]) ? moduleData.style[styleControl.id] : '';
+						setting = wp.customize.create( settingId, initialValue );
+					}
+
+					var controlOptions = {
+						label: styleControl.label,
+						section: sectionId,
+						settings: { 'default': settingId },
+					};
+
+					// Choose control type
+					if ( styleControl.type === 'color' ) {
+						wp.customize.control.add( new wp.customize.ColorControl( settingId, controlOptions ) );
+					} else if ( styleControl.type === 'select' ) {
+						controlOptions.type = 'select';
+						controlOptions.choices = styleControl.choices;
+						wp.customize.control.add( new wp.customize.Control( settingId, controlOptions ) );
+					} else { // 'text'
+						controlOptions.type = 'text';
+						wp.customize.control.add( new wp.customize.Control( settingId, controlOptions ) );
+					}
+
+					// Bind the preview update
+					wp.customize( settingId ).bind( function( to ) {
+						if ( ! moduleData.style ) {
+							moduleData.style = {};
+						}
+						moduleData.style[styleControl.id] = to;
+						control.setting.set( JSON.stringify( control.getLayout() ) );
+
+						// Generate and send the full style block
+						var styleString = '';
+						for (var key in moduleData.style) {
+							if (moduleData.style.hasOwnProperty(key)) {
+								// Simple snake_case to kebab-case conversion
+								var cssKey = key.replace(/_/g, '-');
+								styleString += cssKey + ': ' + moduleData.style[key] + '; ';
+							}
+						}
+
+						var style = '<style>#module-' + moduleId + ' { ' + styleString + ' }</style>';
+						wp.customize.previewer.send( 'update-module-style', { moduleId: 'module-' + moduleId, style: style } );
+					});
+				});
+			}
 		},
 
 		getColumnLayoutSelector: function( currentLayout ) {
@@ -218,6 +491,10 @@
 							'<div class="module" data-type="' + module.type + '">' +
 							module.type +
 							'<span class="remove-module">x</span>' +
+                            '<span class="dashicons dashicons-star-filled save-global-icon" title="Save as Global"></span>' +
+                            '<span class="dashicons dashicons-admin-page copy-style-icon" title="Copy Styles"></span>' +
+                            '<span class="dashicons dashicons-clipboard paste-style-icon" title="Paste Styles"></span>' +
+                            '<span class="dashicons dashicons-art conditionals-icon" title="Conditionals"></span>' +
 							'<span class="dashicons dashicons-admin-generic settings-icon"></span>' +
 							'<span class="dashicons dashicons-admin-customizer style-icon"></span>' +
 							'<div class="visibility-controls">' +
@@ -268,10 +545,20 @@
 							hideOn.push($(this).data('device'));
 						});
 
-						var moduleData = {
-							type: moduleEl.data('type'),
-							hide_on: hideOn
-						};
+						var moduleData = {};
+                        var globalId = moduleEl.data('global-id');
+
+                        if ( globalId ) {
+                            moduleData = {
+                                global_id: globalId,
+                                type: control.getGlobalComponents()[globalId].module.type
+                            };
+                        } else {
+						    moduleData = {
+							    type: moduleEl.data('type'),
+							    hide_on: hideOn
+						    };
+                        }
 
 						// Get existing settings to preserve them.
 						var rowIndex = moduleEl.closest('.h-row, .f-row').data('row');

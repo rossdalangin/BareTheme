@@ -285,7 +285,13 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $border_controls as $id => $control ) {
 			// Add Setting.
-			$sanitize_callback = ( $id === 'ccd_border_color' ) ? 'sanitize_hex_color' : ( $control['type'] === 'select' ? 'sanitize_text_field' : 'floatval' );
+            $sanitize_callback = 'floatval';
+            if ( $id === 'ccd_border_color' ) {
+                $sanitize_callback = 'sanitize_hex_color';
+            } elseif ( $id === 'ccd_border_style' ) {
+                $sanitize_callback = array( $this, 'sanitize_border_style' );
+            }
+
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
@@ -347,7 +353,7 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		foreach ( $shadow_controls as $id => $control ) {
 			// Add Setting.
-			$sanitize_callback = ( $id === 'ccd_shadow_color' ) ? 'sanitize_text_field' : 'floatval'; // Using sanitize_text_field for rgba
+			$sanitize_callback = ( $id === 'ccd_shadow_color' ) ? array( $this, 'sanitize_rgba_color' ) : 'floatval';
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
 				'transport' => 'postMessage',
@@ -568,7 +574,52 @@ class CLOSECLIENT_CUSTOMIZER {
 			'section'  => 'closeclient_footer_builder_section',
 			'builder_type' => 'footer',
 		) ) );
+
+        // Add a hidden setting for global components
+        $wp_customize->add_setting( 'closeclient_global_components', array(
+            'default'   => '{}',
+            'transport' => 'postMessage',
+            'sanitize_callback' => 'wp_kses_post',
+        ) );
 	}
+
+    /**
+     * Sanitize RGBA color.
+     *
+     * @param string $color The color to sanitize.
+     * @return string The sanitized color.
+     */
+    public function sanitize_rgba_color( $color ) {
+        if ( empty( $color ) || is_array( $color ) ) {
+            return '';
+        }
+
+        // If string does not start with 'rgba', then treat as hex
+        // sanitize the hex color and finally convert hex to rgba
+        if ( false === strpos( $color, 'rgba' ) ) {
+            return sanitize_hex_color( $color );
+        }
+
+        // Sanitize
+        $color = str_replace( ' ', '', $color );
+        sscanf( $color, 'rgba(%d,%d,%d,%f)', $red, $green, $blue, $alpha );
+
+        return 'rgba(' . $red . ',' . $green . ',' . $blue . ',' . $alpha . ')';
+    }
+
+    /**
+     * Sanitize border style.
+     *
+     * @param string $style The style to sanitize.
+     * @return string The sanitized style.
+     */
+    public function sanitize_border_style( $style ) {
+        $allowed_styles = array( 'solid', 'dashed', 'dotted' );
+        if ( in_array( $style, $allowed_styles, true ) ) {
+            return $style;
+        }
+        return 'solid';
+    }
 }
 
 new CLOSECLIENT_CUSTOMIZER();

@@ -31,6 +31,12 @@ class CLOSECLIENT_Builder_Control extends WP_Customize_Control {
 				<div class="module" data-type="search"><?php esc_html_e( 'Search', 'closeclient-customizer-pro' ); ?></div>
 				<div class="module" data-type="announcement_bar"><?php esc_html_e( 'Announcement Bar', 'closeclient-customizer-pro' ); ?></div>
 			</div>
+            <div class="global-components-area">
+                <h3><?php esc_html_e( 'Global Components', 'closeclient-customizer-pro' ); ?></h3>
+                <div class="global-components-list">
+                    <!-- Global components will be rendered here by JS -->
+                </div>
+            </div>
 			<div class="builder-area">
 				<!-- Rows will be rendered here by JS -->
 			</div>
@@ -42,6 +48,16 @@ class CLOSECLIENT_Builder_Control extends WP_Customize_Control {
 					<div class="settings-form"></div>
 				</div>
 			</div>
+
+            <div class="module-conditionals-modal" style="display:none;">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3><?php esc_html_e( 'Display Conditions', 'closeclient-customizer-pro' ); ?></h3>
+                    <div class="conditionals-form">
+                        <!-- Conditionals UI will be built by JS -->
+                    </div>
+                </div>
+            </div>
 		</div>
 		<?php
 	}
