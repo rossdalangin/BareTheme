@@ -96,24 +96,9 @@ if ( ! function_exists( 'closeclient_agency_theme_setup' ) ) :
 			)
 		);
 
-        // Register block patterns
-        add_action( 'init', 'closeclient_agency_theme_register_block_patterns' );
 	}
 endif;
 add_action( 'after_setup_theme', 'closeclient_agency_theme_setup' );
-
-/**
- * Register block patterns.
- */
-function closeclient_agency_theme_register_block_patterns() {
-    $pattern_files = glob( get_template_directory() . '/patterns/*.php' );
-    foreach ( $pattern_files as $file ) {
-        register_block_pattern(
-            'closeclient-agency-theme/' . basename( $file, '.php' ),
-            require $file
-        );
-    }
-}
 
 /**
  * Enqueue scripts and styles.
