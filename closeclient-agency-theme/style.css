@@ -115,3 +115,58 @@ h2 {
     padding-top: 2rem;
     border-top: 1px solid #ddd;
 }
+
+/*--------------------------------------------------------------
+# Mobile & Responsive
+--------------------------------------------------------------*/
+.menu-toggle {
+    display: none;
+    background: none;
+    border: 1px solid;
+    padding: 0.5em 1em;
+    border-radius: 3px;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+    .main-navigation ul {
+        display: none;
+    }
+    .main-navigation.toggled-on ul {
+        display: block;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .main-navigation.toggled-on li {
+        display: block;
+        margin: 0;
+        text-align: center;
+    }
+    .main-navigation.toggled-on a {
+        display: block;
+        padding: 1em;
+        border-bottom: 1px solid #eee;
+    }
+
+    .footer-widgets-container {
+        flex-direction: column;
+    }
+
+    .footer-widget-column {
+        width: 100%;
+        margin-bottom: 2rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+    h2 {
+        font-size: 1.75rem;
+    }
+}

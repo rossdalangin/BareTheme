@@ -65,7 +65,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$color_controls = array(
 			'ccd_text_color' => array(
 				'label'   => __( 'Text Color', 'closeclient-customizer-pro' ),
-				'default' => '#333333',
+				'default' => '#212529', // Darker gray for better contrast
 			),
 			'ccd_bg_color' => array(
 				'label'   => __( 'Background Color', 'closeclient-customizer-pro' ),
@@ -73,19 +73,19 @@ class CLOSECLIENT_CUSTOMIZER {
 			),
 			'ccd_brand_primary' => array(
 				'label'   => __( 'Brand Primary', 'closeclient-customizer-pro' ),
-				'default' => '#0073e6',
+				'default' => '#0A2B4C', // Deep, trustworthy blue
 			),
 			'ccd_brand_secondary' => array(
 				'label'   => __( 'Brand Secondary', 'closeclient-customizer-pro' ),
-				'default' => '#f0f0f0',
+				'default' => '#F8F9FA', // Very light gray for subtle backgrounds
 			),
 			'ccd_link_color' => array(
 				'label' => __( 'Link Color', 'closeclient-customizer-pro' ),
-				'default' => '#0073e6',
+				'default' => '#0A2B4C',
 			),
 			'ccd_link_hover_color' => array(
 				'label' => __( 'Link Hover Color', 'closeclient-customizer-pro' ),
-				'default' => '#005cb8',
+				'default' => '#071F38', // Slightly darker blue for hover
 			),
 		);
 
@@ -116,27 +116,37 @@ class CLOSECLIENT_CUSTOMIZER {
 			'ccd_body_font_family' => array(
 				'label'   => __( 'Body Font Family', 'closeclient-customizer-pro' ),
 				'type'    => 'text',
-				'default' => 'sans-serif',
+				'default' => '"Source Sans Pro", sans-serif',
 			),
 			'ccd_heading_font_family' => array(
 				'label'   => __( 'Heading Font Family', 'closeclient-customizer-pro' ),
 				'type'    => 'text',
-				'default' => 'sans-serif',
+				'default' => '"Playfair Display", serif',
 			),
 			'ccd_body_font_size' => array(
 				'label'   => __( 'Body Font Size (rem)', 'closeclient-customizer-pro' ),
 				'type'    => 'number',
-				'default' => 1,
+				'default' => 1.1,
 			),
 			'ccd_h1_font_size' => array(
 				'label'   => __( 'H1 Font Size (rem)', 'closeclient-customizer-pro' ),
 				'type'    => 'number',
-				'default' => 2.5,
+				'default' => 3.052,
 			),
 			'ccd_h2_font_size' => array(
 				'label'   => __( 'H2 Font Size (rem)', 'closeclient-customizer-pro' ),
 				'type'    => 'number',
-				'default' => 2,
+				'default' => 2.441,
+			),
+            'ccd_h3_font_size' => array(
+				'label'   => __( 'H3 Font Size (rem)', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 1.953,
+			),
+            'ccd_h4_font_size' => array(
+				'label'   => __( 'H4 Font Size (rem)', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 1.563,
 			),
 		);
 
@@ -410,11 +420,11 @@ class CLOSECLIENT_CUSTOMIZER {
 		) ) );
 
 		$primary_button_controls = array(
-			'ccd_primary_btn_bg_color' => array( 'label' => __( 'Background Color', 'closeclient-customizer-pro' ), 'default' => '#0073e6', 'type' => 'color' ),
-			'ccd_primary_btn_text_color' => array( 'label' => __( 'Text Color', 'closeclient-customizer-pro' ), 'default' => '#ffffff', 'type' => 'color' ),
-			'ccd_primary_btn_padding_y' => array( 'label' => __( 'Padding Y (rem)', 'closeclient-customizer-pro' ), 'default' => 0.75, 'type' => 'number' ),
-			'ccd_primary_btn_padding_x' => array( 'label' => __( 'Padding X (rem)', 'closeclient-customizer-pro' ), 'default' => 1.5, 'type' => 'number' ),
-			'ccd_primary_btn_border_radius' => array( 'label' => __( 'Border Radius (rem)', 'closeclient-customizer-pro' ), 'default' => 0.5, 'type' => 'number' ),
+			'ccd_primary_btn_bg_color' => array( 'label' => __( 'Background Color', 'closeclient-customizer-pro' ), 'default' => '#0A2B4C', 'type' => 'color' ),
+			'ccd_primary_btn_text_color' => array( 'label' => __( 'Text Color', 'closeclient-customizer-pro' ), 'default' => '#FFFFFF', 'type' => 'color' ),
+			'ccd_primary_btn_padding_y' => array( 'label' => __( 'Padding Y (rem)', 'closeclient-customizer-pro' ), 'default' => 0.8, 'type' => 'number' ),
+			'ccd_primary_btn_padding_x' => array( 'label' => __( 'Padding X (rem)', 'closeclient-customizer-pro' ), 'default' => 2, 'type' => 'number' ),
+			'ccd_primary_btn_border_radius' => array( 'label' => __( 'Border Radius (rem)', 'closeclient-customizer-pro' ), 'default' => 0.3, 'type' => 'number' ),
 		);
 
 		foreach ( $primary_button_controls as $id => $control ) {
