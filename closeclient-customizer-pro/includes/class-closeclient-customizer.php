@@ -27,28 +27,7 @@ class CLOSECLIENT_CUSTOMIZER {
 	 * Enqueue customizer control scripts.
 	 */
 	public function enqueue_customizer_control_scripts() {
-		wp_enqueue_script(
-			'closeclient-builder-customizer',
-			CCP_PLUGIN_URL . 'assets/js/builder-customizer.js',
-			array( 'jquery', 'customize-controls', 'jquery-ui-sortable' ),
-			CCP_VERSION,
-			true
-		);
-
-		wp_enqueue_style(
-			'closeclient-builder-customizer',
-			CCP_PLUGIN_URL . 'assets/css/builder-customizer.css',
-			array(),
-			CCP_VERSION
-		);
-
-		wp_enqueue_script(
-			'closeclient-builder-preview',
-			CCP_PLUGIN_URL . 'assets/js/builder-preview.js',
-			array( 'jquery', 'customize-preview' ),
-			CCP_VERSION,
-			true
-		);
+		// Scripts for the global design system will be enqueued here.
 	}
 
 	/**
@@ -504,83 +483,39 @@ class CLOSECLIENT_CUSTOMIZER {
 			}
 		}
 
-		// == Header & Footer Builder Panels ==
-
-		// Load and register the builder control.
-		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-builder-control.php';
-		$wp_customize->register_control_type( 'CLOSECLIENT_Builder_Control' );
-
-		// Add Header Builder Panel.
-		$wp_customize->add_panel( 'closeclient_header_builder_panel', array(
-			'title'    => __( 'Header Builder', 'closeclient-customizer-pro' ),
+		// == Theme Options Panel ==
+		$wp_customize->add_panel( 'closeclient_theme_options_panel', array(
+			'title'    => __( 'Theme Options', 'closeclient-customizer-pro' ),
 			'priority' => 20,
 		) );
 
-		$wp_customize->add_section( 'closeclient_header_options_section', array(
-			'title' => __( 'Options', 'closeclient-customizer-pro' ),
-			'panel' => 'closeclient_header_builder_panel',
+		// Header Section
+		$wp_customize->add_section( 'closeclient_header_section', array(
+			'title' => __( 'Header', 'closeclient-customizer-pro' ),
+			'panel' => 'closeclient_theme_options_panel',
 		) );
 
-		$wp_customize->add_setting( 'closeclient_header_sticky', array( 'default' => false, 'sanitize_callback' => 'wp_validate_boolean' ) );
+		$wp_customize->add_setting( 'closeclient_header_sticky', array(
+			'default'           => false,
+			'sanitize_callback' => 'wp_validate_boolean',
+			'transport'         => 'postMessage'
+		) );
 		$wp_customize->add_control( 'closeclient_header_sticky', array(
 			'label' => __( 'Enable Sticky Header', 'closeclient-customizer-pro' ),
-			'section' => 'closeclient_header_options_section',
+			'section' => 'closeclient_header_section',
 			'type' => 'checkbox',
 		) );
 
-		$wp_customize->add_setting( 'closeclient_header_transparent', array( 'default' => false, 'sanitize_callback' => 'wp_validate_boolean' ) );
+		$wp_customize->add_setting( 'closeclient_header_transparent', array(
+			'default'           => false,
+			'sanitize_callback' => 'wp_validate_boolean',
+			'transport'         => 'postMessage'
+		) );
 		$wp_customize->add_control( 'closeclient_header_transparent', array(
 			'label' => __( 'Enable Transparent Header', 'closeclient-customizer-pro' ),
-			'section' => 'closeclient_header_options_section',
+			'section' => 'closeclient_header_section',
 			'type' => 'checkbox',
 		) );
-
-		$wp_customize->add_section( 'closeclient_header_builder_section', array(
-			'title' => __( 'Layout', 'closeclient-customizer-pro' ),
-			'panel' => 'closeclient_header_builder_panel',
-		) );
-
-		$wp_customize->add_setting( 'closeclient_header_layout', array(
-			'default'   => '',
-			'transport' => 'postMessage', // Will be handled by JS later
-			'sanitize_callback' => 'wp_kses_post',
-		) );
-
-		$wp_customize->add_control( new CLOSECLIENT_Builder_Control( $wp_customize, 'closeclient_header_layout', array(
-			'label'    => __( 'Header Layout', 'closeclient-customizer-pro' ),
-			'section'  => 'closeclient_header_builder_section',
-			'builder_type' => 'header',
-		) ) );
-
-		// Add Footer Builder Panel.
-		$wp_customize->add_panel( 'closeclient_footer_builder_panel', array(
-			'title'    => __( 'Footer Builder', 'closeclient-customizer-pro' ),
-			'priority' => 21,
-		) );
-
-		$wp_customize->add_section( 'closeclient_footer_builder_section', array(
-			'title' => __( 'Layout', 'closeclient-customizer-pro' ),
-			'panel' => 'closeclient_footer_builder_panel',
-		) );
-
-		$wp_customize->add_setting( 'closeclient_footer_layout', array(
-			'default'   => '',
-			'transport' => 'postMessage',
-			'sanitize_callback' => 'wp_kses_post',
-		) );
-
-		$wp_customize->add_control( new CLOSECLIENT_Builder_Control( $wp_customize, 'closeclient_footer_layout', array(
-			'label'    => __( 'Footer Layout', 'closeclient-customizer-pro' ),
-			'section'  => 'closeclient_footer_builder_section',
-			'builder_type' => 'footer',
-		) ) );
-
-        // Add a hidden setting for global components
-        $wp_customize->add_setting( 'closeclient_global_components', array(
-            'default'   => '{}',
-            'transport' => 'postMessage',
-            'sanitize_callback' => 'wp_kses_post',
-        ) );
 	}
 
     /**

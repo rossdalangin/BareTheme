@@ -95,9 +95,25 @@ if ( ! function_exists( 'closeclient_agency_theme_setup' ) ) :
 				'flex-height' => true,
 			)
 		);
+
+        // Register block patterns
+        add_action( 'init', 'closeclient_agency_theme_register_block_patterns' );
 	}
 endif;
 add_action( 'after_setup_theme', 'closeclient_agency_theme_setup' );
+
+/**
+ * Register block patterns.
+ */
+function closeclient_agency_theme_register_block_patterns() {
+    $pattern_files = glob( get_template_directory() . '/patterns/*.php' );
+    foreach ( $pattern_files as $file ) {
+        register_block_pattern(
+            'closeclient-agency-theme/' . basename( $file, '.php' ),
+            require $file
+        );
+    }
+}
 
 /**
  * Enqueue scripts and styles.
@@ -126,5 +142,43 @@ function closeclient_body_classes( $classes ) {
 add_filter( 'body_class', 'closeclient_body_classes' );
 
 /**
- * The CLOSECLIENT CUSTOMIZER PRO plugin handles the header and footer builder.
+ * Register widget area.
+ *
+ * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar
  */
+function closeclient_agency_theme_widgets_init() {
+	register_sidebar(
+		array(
+			'name'          => esc_html__( 'Footer 1', 'closeclient-agency-theme' ),
+			'id'            => 'footer-1',
+			'description'   => esc_html__( 'Add widgets here.', 'closeclient-agency-theme' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		)
+	);
+    register_sidebar(
+		array(
+			'name'          => esc_html__( 'Footer 2', 'closeclient-agency-theme' ),
+			'id'            => 'footer-2',
+			'description'   => esc_html__( 'Add widgets here.', 'closeclient-agency-theme' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		)
+	);
+    register_sidebar(
+		array(
+			'name'          => esc_html__( 'Footer 3', 'closeclient-agency-theme' ),
+			'id'            => 'footer-3',
+			'description'   => esc_html__( 'Add widgets here.', 'closeclient-agency-theme' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title">',
+			'after_title'   => '</h2>',
+		)
+	);
+}
+add_action( 'widgets_init', 'closeclient_agency_theme_widgets_init' );

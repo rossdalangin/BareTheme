@@ -143,29 +143,6 @@ class CLOSECLIENT_DYNAMIC_CSS {
 			$css .= esc_attr( $variable ) . ': ' . esc_attr( $value ) . $unit . ';';
 		}
 
-		// -- Individual Module Styles --
-		$header_layout_json = get_theme_mod( 'closeclient_header_layout', '' );
-		$footer_layout_json = get_theme_mod( 'closeclient_footer_layout', '' );
-
-		$layouts = array_merge(
-			json_decode( $header_layout_json, true ) ?: [],
-			json_decode( $footer_layout_json, true ) ?: []
-		);
-
-		foreach ( $layouts as $row ) {
-			foreach ( $row['columns'] as $column ) {
-				foreach ( $column['modules'] as $module ) {
-					if ( ! empty( $module['style'] ) ) {
-						$css .= '#' . esc_attr( $module['id'] ) . ' {';
-						foreach ( $module['style'] as $key => $value ) {
-							$css .= esc_attr( $key ) . ': ' . esc_attr( $value ) . ';';
-						}
-						$css .= '}';
-					}
-				}
-			}
-		}
-
 		$css .= '}';
 
 		echo '<style type="text/css" id="closeclient-customizer-pro-dynamic-css">' . $css . '</style>';
