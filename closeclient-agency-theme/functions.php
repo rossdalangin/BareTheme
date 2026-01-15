@@ -129,6 +129,11 @@ function closeclient_body_classes( $classes ) {
 add_filter( 'body_class', 'closeclient_body_classes' );
 
 /**
+ * Custom Post Type Registrations.
+ */
+require get_template_directory() . '/inc/cpt-registrations.php';
+
+/**
  * Register widget area.
  *
  * @link https://developer.wordpress.org/themes/functionality/sidebars/#registering-a-sidebar

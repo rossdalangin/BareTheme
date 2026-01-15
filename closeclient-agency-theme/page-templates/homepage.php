@@ -24,22 +24,54 @@ get_header();
     <div class="practice-areas-section">
         <h2 class="section-heading"><?php echo esc_html( get_theme_mod( 'homepage_practice_areas_heading', 'Our Practice Areas' ) ); ?></h2>
         <div class="practice-areas-grid">
-            <?php for ( $i = 1; $i <= 3; $i++ ) : ?>
-                <div class="practice-area-item">
-                    <h3><?php echo esc_html( get_theme_mod( "homepage_practice_area_{$i}_title", "Practice Area {$i}" ) ); ?></h3>
-                    <p><?php echo wp_kses_post( get_theme_mod( "homepage_practice_area_{$i}_description", "Description for practice area {$i}." ) ); ?></p>
-                </div>
-            <?php endfor; ?>
+            <?php
+            $args = array(
+                'post_type'      => 'services',
+                'posts_per_page' => 3,
+            );
+            $services_query = new WP_Query( $args );
+            if ( $services_query->have_posts() ) :
+                while ( $services_query->have_posts() ) :
+                    $services_query->the_post();
+                    ?>
+                    <div class="practice-area-item">
+                        <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+                        <div><?php the_excerpt(); ?></div>
+                    </div>
+                <?php
+                endwhile;
+                wp_reset_postdata();
+            endif;
+            ?>
         </div>
     </div>
 
     <!-- Testimonials -->
     <div class="testimonials-section">
         <h2 class="section-heading"><?php echo esc_html( get_theme_mod( 'homepage_testimonials_heading', 'What Our Clients Say' ) ); ?></h2>
-        <blockquote class="testimonial-quote">
-            <p>"<?php echo wp_kses_post( get_theme_mod( 'homepage_testimonial_quote', 'Their team provided exceptional service and achieved a fantastic result for my case. I couldn\'t be happier.' ) ); ?>"</p>
-            <cite><?php echo esc_html( get_theme_mod( 'homepage_testimonial_citation', 'John Doe, CEO of Acme Inc.' ) ); ?></cite>
-        </blockquote>
+        <?php
+        $testimonial_ids = get_theme_mod( 'homepage_testimonials', array() );
+        if ( ! empty( $testimonial_ids ) ) :
+            $args = array(
+                'post_type'      => 'testimonials',
+                'post__in'       => $testimonial_ids,
+                'orderby'        => 'post__in',
+            );
+            $testimonials_query = new WP_Query( $args );
+            if ( $testimonials_query->have_posts() ) :
+                while ( $testimonials_query->have_posts() ) :
+                    $testimonials_query->the_post();
+                    ?>
+                    <blockquote class="testimonial-quote">
+                        <p>"<?php echo wp_kses_post( get_the_content() ); ?>"</p>
+                        <cite><?php the_title(); ?></cite>
+                    </blockquote>
+                <?php
+                endwhile;
+                wp_reset_postdata();
+            endif;
+        endif;
+        ?>
     </div>
 
 </main><!-- #main -->

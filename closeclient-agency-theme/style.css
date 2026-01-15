@@ -90,6 +90,14 @@ h2 {
     margin: 0 1rem;
 }
 
+.header-cta .button-primary {
+    background-color: var(--ccd-primary-btn-bg-color);
+    color: var(--ccd-primary-btn-text-color);
+    padding: var(--ccd-primary-btn-padding-y) var(--ccd-primary-btn-padding-x);
+    border-radius: var(--ccd-primary-btn-border-radius);
+    text-decoration: none;
+}
+
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
@@ -140,7 +148,7 @@ h2 {
         top: 100%;
         left: 0;
         width: 100%;
-        background: #fff;
+        background: var(--mobile-menu-bg-color, #fff);
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     .main-navigation.toggled-on li {
@@ -152,6 +160,7 @@ h2 {
         display: block;
         padding: 1em;
         border-bottom: 1px solid #eee;
+        color: var(--mobile-menu-link-color);
     }
 
     .footer-widgets-container {
@@ -239,4 +248,32 @@ h2 {
     margin-top: 1rem;
     font-size: 1rem;
     font-style: normal;
+}
+
+/*--------------------------------------------------------------
+# CPT Archives
+--------------------------------------------------------------*/
+.services-grid,
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.service-item,
+.gallery-item {
+    border: 1px solid var(--ccd-border-color);
+    padding: 2rem;
+    border-radius: var(--ccd-border-radius-m);
+}
+
+.testimonials-archive {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.testimonial-item {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--ccd-border-color);
 }

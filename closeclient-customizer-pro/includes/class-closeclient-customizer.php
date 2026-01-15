@@ -49,16 +49,22 @@ class CLOSECLIENT_CUSTOMIZER {
 	 * @param WP_Customize_Manager $wp_customize The WP_Customize_Manager object.
 	 */
 	public function register_customize_settings( $wp_customize ) {
-		// Add the Global Design System Panel.
-		$wp_customize->add_panel( 'closeclient_global_design_system', array(
-			'title'       => __( 'Global Design System', 'closeclient-customizer-pro' ),
-			'priority'    => 10,
-		) );
+		// == Theme Options Panel ==
+        $wp_customize->add_panel( 'closeclient_theme_options_panel', array(
+            'title'    => __( 'Theme Options', 'closeclient-customizer-pro' ),
+            'priority' => 10,
+        ) );
+
+		// Global Design System Section
+        $wp_customize->add_section( 'closeclient_global_design_section', array(
+            'title' => __( 'Global Design System', 'closeclient-customizer-pro' ),
+            'panel' => 'closeclient_theme_options_panel',
+        ) );
 
 		// Add the Colors Section.
 		$wp_customize->add_section( 'closeclient_colors_section', array(
 			'title'       => __( 'Colors', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'     => 'closeclient_global_design_section',
 		) );
 
 		// Define Color Controls.
@@ -108,7 +114,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		// Add the Typography Section.
 		$wp_customize->add_section( 'closeclient_typography_section', array(
 			'title'       => __( 'Typography', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'       => 'closeclient_global_design_section',
 		) );
 
 		// Define Typography Controls
@@ -178,7 +184,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		// Add the Spacing Section.
 		$wp_customize->add_section( 'closeclient_spacing_section', array(
 			'title'       => __( 'Spacing', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'       => 'closeclient_global_design_section',
 		) );
 
 		// Define Spacing Controls
@@ -238,7 +244,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		// Add the Borders & Radius Section.
 		$wp_customize->add_section( 'closeclient_borders_section', array(
 			'title'       => __( 'Borders & Radius', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'       => 'closeclient_global_design_section',
 		) );
 
 		// Define Border Controls.
@@ -316,7 +322,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		// Add the Shadows Section.
 		$wp_customize->add_section( 'closeclient_shadows_section', array(
 			'title'       => __( 'Shadows', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'       => 'closeclient_global_design_section',
 		) );
 
 		// Define Shadow Controls.
@@ -377,7 +383,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		// Add the Layout Section.
 		$wp_customize->add_section( 'closeclient_layout_section', array(
 			'title'       => __( 'Layout', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'       => 'closeclient_global_design_section',
 		) );
 
 		// Define Layout Controls.
@@ -415,7 +421,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		// Add the Buttons Section.
 		$wp_customize->add_section( 'closeclient_buttons_section', array(
 			'title'       => __( 'Buttons', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'       => 'closeclient_global_design_section',
 		) );
 
 		// -- Primary Button Controls --
@@ -475,7 +481,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		// Add the Forms Section.
 		$wp_customize->add_section( 'closeclient_forms_section', array(
 			'title'       => __( 'Forms', 'closeclient-customizer-pro' ),
-			'panel'       => 'closeclient_global_design_system',
+			'section'       => 'closeclient_global_design_section',
 		) );
 
 		// -- Form Controls --
@@ -499,12 +505,6 @@ class CLOSECLIENT_CUSTOMIZER {
 				$wp_customize->add_control( $id, array( 'label' => $control['label'], 'section' => 'closeclient_forms_section', 'type' => 'number', 'input_attrs' => array('step' => '0.1') ) );
 			}
 		}
-
-		// == Theme Options Panel ==
-		$wp_customize->add_panel( 'closeclient_theme_options_panel', array(
-			'title'    => __( 'Theme Options', 'closeclient-customizer-pro' ),
-			'priority' => 20,
-		) );
 
 		// Header Section
 		$wp_customize->add_section( 'closeclient_header_section', array(
@@ -534,64 +534,90 @@ class CLOSECLIENT_CUSTOMIZER {
 			'type' => 'checkbox',
 		) );
 
-        // == Page Content Panel ==
-		$wp_customize->add_panel( 'closeclient_page_content_panel', array(
-			'title'    => __( 'Page Content', 'closeclient-customizer-pro' ),
-			'priority' => 25,
-		) );
+        // -- Header CTA Button --
+        $wp_customize->add_setting( 'header_cta_button_text', array( 'default' => 'Get a Quote', 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'header_cta_button_text', array( 'label' => 'Header CTA Text', 'section' => 'closeclient_header_section', 'type' => 'text' ) );
+        $wp_customize->add_setting( 'header_cta_button_link', array( 'default' => '#', 'sanitize_callback' => 'esc_url_raw' ) );
+        $wp_customize->add_control( 'header_cta_button_link', array( 'label' => 'Header CTA Link', 'section' => 'closeclient_header_section', 'type' => 'url' ) );
+
+        // Mobile Menu Section
+        $wp_customize->add_section( 'closeclient_mobile_menu_section', array(
+            'title' => __( 'Mobile Menu', 'closeclient-customizer-pro' ),
+            'panel' => 'closeclient_theme_options_panel',
+        ) );
+
+        $wp_customize->add_setting( 'mobile_menu_bg_color', array( 'default' => '#FFFFFF', 'sanitize_callback' => 'sanitize_hex_color' ) );
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'mobile_menu_bg_color', array(
+            'label'    => __( 'Menu Background Color', 'closeclient-customizer-pro' ),
+            'section'  => 'closeclient_mobile_menu_section',
+        ) ) );
+        $wp_customize->add_setting( 'mobile_menu_link_color', array( 'default' => '#0A2B4C', 'sanitize_callback' => 'sanitize_hex_color' ) );
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'mobile_menu_link_color', array(
+            'label'    => __( 'Menu Link Color', 'closeclient-customizer-pro' ),
+            'section'  => 'closeclient_mobile_menu_section',
+        ) ) );
+
+        // Page Content Section
+        $wp_customize->add_section( 'closeclient_page_content_section', array(
+            'title' => __( 'Page Content', 'closeclient-customizer-pro' ),
+            'panel' => 'closeclient_theme_options_panel',
+        ) );
 
         // Homepage Section
         $wp_customize->add_section( 'closeclient_homepage_section', array(
             'title' => __( 'Homepage', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'section' => 'closeclient_page_content_section',
         ) );
 
         // -- Hero CTA --
-        $wp_customize->add_setting( 'homepage_hero_heading', array( 'default' => 'Expert Legal Counsel for a Modern World', 'sanitize_callback' => 'sanitize_text_field' ) );
-        $wp_customize->add_control( 'homepage_hero_heading', array( 'label' => 'Hero Heading', 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
-        $wp_customize->add_setting( 'homepage_hero_subheading', array( 'default' => 'Navigate your legal challenges with a team of dedicated, experienced, and forward-thinking attorneys.', 'sanitize_callback' => 'wp_kses_post' ) );
-        $wp_customize->add_control( 'homepage_hero_subheading', array( 'label' => 'Hero Subheading', 'section' => 'closeclient_homepage_section', 'type' => 'textarea' ) );
-        $wp_customize->add_setting( 'homepage_hero_button_text', array( 'default' => 'Schedule a Free Consultation', 'sanitize_callback' => 'sanitize_text_field' ) );
-        $wp_customize->add_control( 'homepage_hero_button_text', array( 'label' => 'Hero Button Text', 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
+        $wp_customize->add_setting( 'homepage_hero_heading', array( 'default' => __( 'Expert Legal Counsel for a Modern World', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'homepage_hero_heading', array( 'label' => __( 'Hero Heading', 'closeclient-customizer-pro' ), 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
+        $wp_customize->add_setting( 'homepage_hero_subheading', array( 'default' => __( 'Navigate your legal challenges with a team of dedicated, experienced, and forward-thinking attorneys.', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'wp_kses_post' ) );
+        $wp_customize->add_control( 'homepage_hero_subheading', array( 'label' => __( 'Hero Subheading', 'closeclient-customizer-pro' ), 'section' => 'closeclient_homepage_section', 'type' => 'textarea' ) );
+        $wp_customize->add_setting( 'homepage_hero_button_text', array( 'default' => __( 'Schedule a Free Consultation', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'homepage_hero_button_text', array( 'label' => __( 'Hero Button Text', 'closeclient-customizer-pro' ), 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
         $wp_customize->add_setting( 'homepage_hero_button_link', array( 'default' => '#', 'sanitize_callback' => 'esc_url_raw' ) );
         $wp_customize->add_control( 'homepage_hero_button_link', array( 'label' => 'Hero Button Link', 'section' => 'closeclient_homepage_section', 'type' => 'url' ) );
 
         // -- Practice Areas --
-        $wp_customize->add_setting( 'homepage_practice_areas_heading', array( 'default' => 'Our Practice Areas', 'sanitize_callback' => 'sanitize_text_field' ) );
-        $wp_customize->add_control( 'homepage_practice_areas_heading', array( 'label' => 'Practice Areas Heading', 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
-        // Repeater for practice areas would go here in a real-world scenario. For now, we'll use three static sections.
-        for($i = 1; $i <= 3; $i++) {
-            $wp_customize->add_setting( "homepage_practice_area_{$i}_title", array( 'default' => "Practice Area {$i}", 'sanitize_callback' => 'sanitize_text_field' ) );
-            $wp_customize->add_control( "homepage_practice_area_{$i}_title", array( 'label' => "Practice Area {$i} Title", 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
-            $wp_customize->add_setting( "homepage_practice_area_{$i}_description", array( 'default' => "Description for practice area {$i}.", 'sanitize_callback' => 'wp_kses_post' ) );
-            $wp_customize->add_control( "homepage_practice_area_{$i}_description", array( 'label' => "Practice Area {$i} Description", 'section' => 'closeclient_homepage_section', 'type' => 'textarea' ) );
-        }
+        $wp_customize->add_setting( 'homepage_practice_areas_heading', array( 'default' => __( 'Our Practice Areas', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'homepage_practice_areas_heading', array( 'label' => __( 'Practice Areas Heading', 'closeclient-customizer-pro' ), 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
 
         // -- Testimonials --
-        $wp_customize->add_setting( 'homepage_testimonials_heading', array( 'default' => 'What Our Clients Say', 'sanitize_callback' => 'sanitize_text_field' ) );
-        $wp_customize->add_control( 'homepage_testimonials_heading', array( 'label' => 'Testimonials Heading', 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
-        $wp_customize->add_setting( 'homepage_testimonial_quote', array( 'default' => 'Their team provided exceptional service and achieved a fantastic result for my case. I couldn\'t be happier.', 'sanitize_callback' => 'wp_kses_post' ) );
-        $wp_customize->add_control( 'homepage_testimonial_quote', array( 'label' => 'Testimonial Quote', 'section' => 'closeclient_homepage_section', 'type' => 'textarea' ) );
-        $wp_customize->add_setting( 'homepage_testimonial_citation', array( 'default' => 'John Doe, CEO of Acme Inc.', 'sanitize_callback' => 'sanitize_text_field' ) );
-        $wp_customize->add_control( 'homepage_testimonial_citation', array( 'label' => 'Testimonial Citation', 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
+        $wp_customize->add_setting( 'homepage_testimonials_heading', array( 'default' => __( 'What Our Clients Say', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'homepage_testimonials_heading', array( 'label' => __( 'Testimonials Heading', 'closeclient-customizer-pro' ), 'section' => 'closeclient_homepage_section', 'type' => 'text' ) );
+
+        $testimonials = get_posts( array( 'post_type' => 'testimonials', 'posts_per_page' => -1 ) );
+        $testimonials_choices = array();
+        foreach ( $testimonials as $testimonial ) {
+            $testimonials_choices[ $testimonial->ID ] = $testimonial->post_title;
+        }
+        $wp_customize->add_setting( 'homepage_testimonials', array( 'default' => array(), 'sanitize_callback' => array( $this, 'sanitize_multi_select' ) ) );
+        $wp_customize->add_control( new WP_Customize_Control( $wp_customize, 'homepage_testimonials', array(
+            'label'       => __( 'Select Testimonials to Display', 'closeclient-customizer-pro' ),
+            'section'     => 'closeclient_homepage_section',
+            'type'        => 'select',
+            'multiple'    => true,
+            'choices'     => $testimonials_choices,
+        ) ) );
 
         // About Us Section
         $wp_customize->add_section( 'closeclient_about_us_section', array(
             'title' => __( 'About Us', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'section' => 'closeclient_page_content_section',
         ) );
 
         // -- Team Section --
-        $wp_customize->add_setting( 'about_us_team_heading', array( 'default' => 'Meet Our Team', 'sanitize_callback' => 'sanitize_text_field' ) );
-        $wp_customize->add_control( 'about_us_team_heading', array( 'label' => 'Team Section Heading', 'section' => 'closeclient_about_us_section', 'type' => 'text' ) );
+        $wp_customize->add_setting( 'about_us_team_heading', array( 'default' => __( 'Meet Our Team', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'about_us_team_heading', array( 'label' => __( 'Team Section Heading', 'closeclient-customizer-pro' ), 'section' => 'closeclient_about_us_section', 'type' => 'text' ) );
         for($i = 1; $i <= 3; $i++) {
-            $wp_customize->add_setting( "about_us_team_member_{$i}_name", array( 'default' => "Team Member {$i}", 'sanitize_callback' => 'sanitize_text_field' ) );
-            $wp_customize->add_control( "about_us_team_member_{$i}_name", array( 'label' => "Team Member {$i} Name", 'section' => 'closeclient_about_us_section', 'type' => 'text' ) );
-            $wp_customize->add_setting( "about_us_team_member_{$i}_title", array( 'default' => "Title", 'sanitize_callback' => 'sanitize_text_field' ) );
-            $wp_customize->add_control( "about_us_team_member_{$i}_title", array( 'label' => "Team Member {$i} Title", 'section' => 'closeclient_about_us_section', 'type' => 'text' ) );
+            $wp_customize->add_setting( "about_us_team_member_{$i}_name", array( 'default' => sprintf( __( 'Team Member %d', 'closeclient-customizer-pro' ), $i ), 'sanitize_callback' => 'sanitize_text_field' ) );
+            $wp_customize->add_control( "about_us_team_member_{$i}_name", array( 'label' => sprintf( __( 'Team Member %d Name', 'closeclient-customizer-pro' ), $i ), 'section' => 'closeclient_about_us_section', 'type' => 'text' ) );
+            $wp_customize->add_setting( "about_us_team_member_{$i}_title", array( 'default' => __( 'Title', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+            $wp_customize->add_control( "about_us_team_member_{$i}_title", array( 'label' => sprintf( __( 'Team Member %d Title', 'closeclient-customizer-pro' ), $i ), 'section' => 'closeclient_about_us_section', 'type' => 'text' ) );
             $wp_customize->add_setting( "about_us_team_member_{$i}_image", array( 'sanitize_callback' => 'esc_url_raw' ) );
             $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, "about_us_team_member_{$i}_image", array(
-                'label'    => __( "Team Member {$i} Image", 'closeclient-customizer-pro' ),
+                'label'    => sprintf( __( 'Team Member %d Image', 'closeclient-customizer-pro' ), $i ),
                 'section'  => 'closeclient_about_us_section',
             ) ) );
         }
@@ -599,14 +625,18 @@ class CLOSECLIENT_CUSTOMIZER {
         // Services Section
         $wp_customize->add_section( 'closeclient_services_section', array(
             'title' => __( 'Services', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'section' => 'closeclient_page_content_section',
         ) );
+        $wp_customize->add_setting( 'services_archive_title', array( 'default' => __( 'Our Services', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'services_archive_title', array( 'label' => __( 'Services Archive Title', 'closeclient-customizer-pro' ), 'section' => 'closeclient_services_section', 'type' => 'text' ) );
 
         // Testimonials Section
         $wp_customize->add_section( 'closeclient_testimonials_section', array(
             'title' => __( 'Testimonials', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'section' => 'closeclient_page_content_section',
         ) );
+        $wp_customize->add_setting( 'testimonials_archive_title', array( 'default' => __( 'What Our Clients Say', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+        $wp_customize->add_control( 'testimonials_archive_title', array( 'label' => __( 'Testimonials Archive Title', 'closeclient-customizer-pro' ), 'section' => 'closeclient_testimonials_section', 'type' => 'text' ) );
 	}
 
     /**
@@ -718,6 +748,19 @@ class CLOSECLIENT_CUSTOMIZER {
             return $font;
         }
         return 'Source Sans Pro';
+    }
+
+    /**
+     * Sanitize multi-select.
+     *
+     * @param array $input The input to sanitize.
+     * @return array The sanitized input.
+     */
+    public function sanitize_multi_select( $input ) {
+        if ( ! is_array( $input ) ) {
+            return array();
+        }
+        return array_map( 'absint', $input );
     }
 }
 

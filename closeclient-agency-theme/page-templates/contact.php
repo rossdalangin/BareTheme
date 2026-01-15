@@ -11,33 +11,20 @@ get_header();
 
 <main id="primary" class="site-main">
 
-    <?php
-    // Display the page content first
-    while ( have_posts() ) :
-        the_post();
-        the_content();
-    endwhile;
-    ?>
+    <div class="contact-section">
+        <h2 class="section-heading"><?php echo esc_html( get_theme_mod( 'contact_page_heading', __( 'Contact Us', 'closeclient-agency-theme' ) ) ); ?></h2>
+        <p class="section-subheading"><?php echo esc_html( get_theme_mod( 'contact_page_subheading', __( 'We\'re here to help. Reach out to us for a consultation.', 'closeclient-agency-theme' ) ) ); ?></p>
 
-    <!-- wp:group {"style":{"spacing":{"padding":{"top":"4rem","bottom":"4rem"}}},"layout":{"type":"constrained"}} -->
-    <div class="wp-block-group" style="padding-top:4rem;padding-bottom:4rem">
-        <!-- wp:heading {"textAlign":"center"} -->
-        <h2 class="has-text-align-center">Contact Us</h2>
-        <!-- /wp:heading -->
-
-        <!-- wp:paragraph {"textAlign":"center"} -->
-        <p class="has-text-align-center">We're here to help. Reach out to us for a consultation.</p>
-        <!-- /wp:paragraph -->
-
-        <!-- wp:spacer {"height":"2rem"} -->
-        <div style="height:2rem" aria-hidden="true" class="wp-block-spacer"></div>
-        <!-- /wp:spacer -->
-
-        <!-- wp:paragraph {"textAlign":"center","style":{"typography":{"fontStyle":"italic"}},"textColor":"gray"} -->
-        <p class="has-text-align-center has-gray-color has-text-color" style="font-style:italic">Your contact form shortcode or block can be placed here.</p>
-        <!-- /wp:paragraph -->
+        <div class="contact-form">
+            <?php
+            // Display the page content first
+            while ( have_posts() ) :
+                the_post();
+                the_content();
+            endwhile;
+            ?>
+        </div>
     </div>
-    <!-- /wp:group -->
 
 </main><!-- #main -->
 

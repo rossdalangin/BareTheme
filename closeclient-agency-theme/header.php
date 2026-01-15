@@ -24,10 +24,13 @@
             <?php
             wp_nav_menu(
                 array(
-                    'theme_location' => 'primary',
+                    'theme_location' => 'menu-1',
                     'menu_id'        => 'primary-menu',
                 )
             );
             ?>
         </nav>
+        <div class="header-cta">
+            <a href="<?php echo esc_url( get_theme_mod( 'header_cta_button_link', '#' ) ); ?>" class="button-primary"><?php echo esc_html( get_theme_mod( 'header_cta_button_text', 'Get a Quote' ) ); ?></a>
+        </div>
     </header>
