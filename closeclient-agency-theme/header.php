@@ -33,4 +33,8 @@
         <div class="header-cta">
             <a href="<?php echo esc_url( get_theme_mod( 'header_cta_button_link', '#' ) ); ?>" class="button-primary"><?php echo esc_html( get_theme_mod( 'header_cta_button_text', 'Get a Quote' ) ); ?></a>
         </div>
+        <div class="dark-mode-toggle">
+            <input type="checkbox" id="dark-mode-switch" name="dark-mode-switch" <?php checked( get_theme_mod( 'ccd_dark_mode_enabled' ), true ); ?>>
+            <label for="dark-mode-switch"></label>
+        </div>
     </header>

@@ -73,19 +73,32 @@ class CLOSECLIENT_DYNAMIC_CSS {
 
 		// Get typography settings
 		$typography_settings = array(
-			'ccd_body_font_family'    => '--ccd-body-font-family',
-			'ccd_heading_font_family' => '--ccd-heading-font-family',
-			'ccd_body_font_size'      => '--ccd-body-font-size',
-			'ccd_h1_font_size'        => '--ccd-h1-font-size',
-			'ccd_h2_font_size'        => '--ccd-h2-font-size',
+			'ccd_body_font_family'       => '--ccd-body-font-family',
+			'ccd_heading_font_family'    => '--ccd-heading-font-family',
+			'ccd_body_font_size'         => '--ccd-body-font-size',
+			'ccd_h1_font_size'           => '--ccd-h1-font-size',
+			'ccd_h2_font_size'           => '--ccd-h2-font-size',
+			'ccd_h3_font_size'           => '--ccd-h3-font-size',
+			'ccd_h4_font_size'           => '--ccd-h4-font-size',
+			'ccd_body_font_weight'       => '--ccd-body-font-weight',
+			'ccd_heading_font_weight'    => '--ccd-heading-font-weight',
+			'ccd_body_line_height'       => '--ccd-body-line-height',
+			'ccd_heading_line_height'    => '--ccd-heading-line-height',
+			'ccd_body_letter_spacing'    => '--ccd-body-letter-spacing',
+			'ccd_heading_letter_spacing' => '--ccd-heading-letter-spacing',
+			'ccd_body_text_transform'    => '--ccd-body-text-transform',
+			'ccd_heading_text_transform' => '--ccd-heading-text-transform',
 		);
 
 		foreach ( $typography_settings as $setting => $variable ) {
 			$value = get_theme_mod( $setting, '' );
-			if ( is_numeric( $value ) ) {
-				$value .= 'rem';
+			$unit  = '';
+			if ( strpos( $setting, 'font_size' ) !== false ) {
+				$unit = 'rem';
+			} elseif ( strpos( $setting, 'letter_spacing' ) !== false ) {
+				$unit = 'px';
 			}
-			$css .= esc_attr( $variable ) . ': ' . esc_attr( $value ) . ';';
+			$css .= esc_attr( $variable ) . ': ' . esc_attr( $value ) . $unit . ';';
 		}
 
 		// Get spacing settings
@@ -173,7 +186,37 @@ class CLOSECLIENT_DYNAMIC_CSS {
 			$css .= esc_attr( $variable ) . ': ' . esc_attr( $value ) . $unit . ';';
 		}
 
+		// Get section background settings
+		$section_bg_settings = array(
+			'ccd_section_bg_color'         => '--ccd-section-bg-color',
+			'ccd_section_bg_image'         => '--ccd-section-bg-image',
+			'ccd_section_bg_overlay_color' => '--ccd-section-bg-overlay-color',
+		);
+
+		foreach ( $section_bg_settings as $setting => $variable ) {
+			$value = get_theme_mod( $setting, '' );
+			if ( $setting === 'ccd_section_bg_image' ) {
+				$css .= esc_attr( $variable ) . ': url(' . esc_url( $value ) . ');';
+			} else {
+				$css .= esc_attr( $variable ) . ': ' . esc_attr( $value ) . ';';
+			}
+		}
+
 		$css .= '}';
+
+		// Dark Mode
+		if ( get_theme_mod( 'ccd_dark_mode_enabled', false ) ) {
+			$css .= 'body.dark-mode {';
+			$dark_mode_settings = array(
+				'ccd_dark_mode_text_color' => '--ccd-text-color',
+				'ccd_dark_mode_bg_color'   => '--ccd-bg-color',
+			);
+
+			foreach ( $dark_mode_settings as $setting => $variable ) {
+				$css .= esc_attr( $variable ) . ': ' . esc_attr( get_theme_mod( $setting, '' ) ) . ';';
+			}
+			$css .= '}';
+		}
 
 		echo '<style type="text/css" id="closeclient-customizer-pro-dynamic-css">' . $css . '</style>';
 	}

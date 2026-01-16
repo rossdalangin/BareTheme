@@ -16,7 +16,11 @@ get_header();
 
     foreach ( $sections as $section => $enabled ) {
         if ( $enabled ) {
-            get_template_part( 'template-parts/homepage', $section );
+            ?>
+            <div class="page-section">
+                <?php get_template_part( 'template-parts/homepage', $section ); ?>
+            </div>
+            <?php
         }
     }
     ?>

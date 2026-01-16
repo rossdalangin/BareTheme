@@ -157,14 +157,60 @@ class CLOSECLIENT_CUSTOMIZER {
 				'type'    => 'number',
 				'default' => 1.563,
 			),
+			'ccd_body_font_weight' => array(
+				'label'   => __( 'Body Font Weight', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 400,
+			),
+			'ccd_heading_font_weight' => array(
+				'label'   => __( 'Heading Font Weight', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 700,
+			),
+			'ccd_body_line_height' => array(
+				'label'   => __( 'Body Line Height', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 1.6,
+			),
+			'ccd_heading_line_height' => array(
+				'label'   => __( 'Heading Line Height', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 1.2,
+			),
+			'ccd_body_letter_spacing' => array(
+				'label'   => __( 'Body Letter Spacing (px)', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 0,
+			),
+			'ccd_heading_letter_spacing' => array(
+				'label'   => __( 'Heading Letter Spacing (px)', 'closeclient-customizer-pro' ),
+				'type'    => 'number',
+				'default' => 0,
+			),
+			'ccd_body_text_transform' => array(
+				'label'   => __( 'Body Text Transform', 'closeclient-customizer-pro' ),
+				'type'    => 'select',
+				'choices' => array( 'none' => 'None', 'uppercase' => 'Uppercase', 'lowercase' => 'Lowercase', 'capitalize' => 'Capitalize' ),
+				'default' => 'none',
+			),
+			'ccd_heading_text_transform' => array(
+				'label'   => __( 'Heading Text Transform', 'closeclient-customizer-pro' ),
+				'type'    => 'select',
+				'choices' => array( 'none' => 'None', 'uppercase' => 'Uppercase', 'lowercase' => 'Lowercase', 'capitalize' => 'Capitalize' ),
+				'default' => 'none',
+			),
 		);
 
 		foreach ( $typography_controls as $id => $control ) {
 			// Add Setting.
-            $sanitize_callback = 'floatval';
-            if ( $control['type'] === 'select' ) {
-                $sanitize_callback = array( $this, 'sanitize_font_choice' );
-            }
+			$sanitize_callback = 'floatval';
+			if ( $control['type'] === 'select' ) {
+				$sanitize_callback = array( $this, 'sanitize_font_choice' );
+			} elseif ( $id === 'ccd_body_font_weight' || $id === 'ccd_heading_font_weight' ) {
+				$sanitize_callback = 'absint';
+			} elseif ( $id === 'ccd_body_text_transform' || $id === 'ccd_heading_text_transform' ) {
+				$sanitize_callback = array( $this, 'sanitize_text_transform' );
+			}
 
 			$wp_customize->add_setting( $id, array(
 				'default'   => $control['default'],
@@ -490,6 +536,66 @@ class CLOSECLIENT_CUSTOMIZER {
 			'section'       => 'closeclient_global_design_section',
 		) );
 
+		// Add the Section Backgrounds Section.
+		$wp_customize->add_section( 'closeclient_section_backgrounds_section', array(
+			'title'       => __( 'Section Backgrounds', 'closeclient-customizer-pro' ),
+			'section'       => 'closeclient_global_design_section',
+		) );
+
+		// -- Section Background Controls --
+		$section_background_controls = array(
+			'ccd_section_bg_color' => array( 'label' => __( 'Background Color', 'closeclient-customizer-pro' ), 'default' => '#FFFFFF', 'type' => 'color' ),
+			'ccd_section_bg_image' => array( 'label' => __( 'Background Image', 'closeclient-customizer-pro' ), 'type' => 'image' ),
+			'ccd_section_bg_overlay_color' => array( 'label' => __( 'Overlay Color', 'closeclient-customizer-pro' ), 'default' => 'rgba(0,0,0,0.5)', 'type' => 'color' ),
+		);
+
+		foreach ( $section_background_controls as $id => $control ) {
+			$wp_customize->add_setting( $id, array(
+				'default' => isset( $control['default'] ) ? $control['default'] : '',
+				'transport' => 'postMessage',
+				'sanitize_callback' => $control['type'] === 'color' ? 'sanitize_hex_color' : 'esc_url_raw',
+			) );
+
+			if ( $control['type'] === 'image' ) {
+				$wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, $id, array( 'label' => $control['label'], 'section' => 'closeclient_section_backgrounds_section' ) ) );
+			} else {
+				$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array( 'label' => $control['label'], 'section' => 'closeclient_section_backgrounds_section' ) ) );
+			}
+		}
+
+		// Add the Dark Mode Section.
+		$wp_customize->add_section( 'closeclient_dark_mode_section', array(
+			'title'       => __( 'Dark Mode', 'closeclient-customizer-pro' ),
+			'panel'       => 'closeclient_theme_options_panel',
+		) );
+
+		// -- Dark Mode Controls --
+		$wp_customize->add_setting( 'ccd_dark_mode_enabled', array(
+			'default'           => false,
+			'sanitize_callback' => 'wp_validate_boolean',
+			'transport'         => 'postMessage',
+		) );
+
+		$wp_customize->add_control( 'ccd_dark_mode_enabled', array(
+			'label'   => __( 'Enable Dark Mode', 'closeclient-customizer-pro' ),
+			'section' => 'closeclient_dark_mode_section',
+			'type'    => 'checkbox',
+		) );
+
+		$dark_mode_color_controls = array(
+			'ccd_dark_mode_text_color' => array( 'label' => __( 'Text Color', 'closeclient-customizer-pro' ), 'default' => '#FFFFFF', 'type' => 'color' ),
+			'ccd_dark_mode_bg_color'   => array( 'label' => __( 'Background Color', 'closeclient-customizer-pro' ), 'default' => '#121212', 'type' => 'color' ),
+		);
+
+		foreach ( $dark_mode_color_controls as $id => $control ) {
+			$wp_customize->add_setting( $id, array(
+				'default'           => $control['default'],
+				'transport'         => 'postMessage',
+				'sanitize_callback' => 'sanitize_hex_color',
+			) );
+			$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array( 'label' => $control['label'], 'section' => 'closeclient_dark_mode_section' ) ) );
+		}
+
 		// -- Form Controls --
 		$form_controls = array(
 			'ccd_form_input_bg_color' => array( 'label' => __( 'Input BG Color', 'closeclient-customizer-pro' ), 'default' => '#f9f9f9', 'type' => 'color' ),
@@ -698,6 +804,20 @@ class CLOSECLIENT_CUSTOMIZER {
             return $style;
         }
         return 'solid';
+    }
+
+    /**
+     * Sanitize text transform.
+     *
+     * @param string $transform The transform to sanitize.
+     * @return string The sanitized transform.
+     */
+    public function sanitize_text_transform( $transform ) {
+        $allowed_transforms = array( 'none', 'uppercase', 'lowercase', 'capitalize' );
+        if ( in_array( $transform, $allowed_transforms, true ) ) {
+            return $transform;
+        }
+        return 'none';
     }
 
     /**

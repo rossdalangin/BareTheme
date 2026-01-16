@@ -12,7 +12,7 @@ get_header();
 <main id="primary" class="site-main">
 
     <!-- Team Section -->
-    <div class="team-section">
+    <div class="page-section team-section">
         <h2 class="section-heading"><?php echo esc_html( get_theme_mod( 'about_us_team_heading', 'Meet Our Team' ) ); ?></h2>
         <div class="team-grid">
             <?php for ( $i = 1; $i <= 3; $i++ ) : ?>
