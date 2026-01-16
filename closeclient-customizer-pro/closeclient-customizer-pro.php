@@ -37,6 +37,20 @@ final class CLOSECLIENT_CUSTOMIZER_PRO {
 	protected static $_instance = null;
 
 	/**
+	 * Customizer instance.
+	 *
+	 * @var CLOSECLIENT_CUSTOMIZER
+	 */
+	public $customizer;
+
+	/**
+	 * Dynamic CSS instance.
+	 *
+	 * @var CLOSECLIENT_DYNAMIC_CSS
+	 */
+	public $dynamic_css;
+
+	/**
 	 * Main instance.
 	 */
 	public static function instance() {
@@ -51,6 +65,7 @@ final class CLOSECLIENT_CUSTOMIZER_PRO {
 	 */
 	public function __construct() {
 		$this->includes();
+		$this->init();
 		$this->init_hooks();
 	}
 
@@ -60,6 +75,14 @@ final class CLOSECLIENT_CUSTOMIZER_PRO {
 	public function includes() {
 		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-customizer.php';
 		require_once CCP_PLUGIN_DIR . 'includes/class-closeclient-dynamic-css.php';
+	}
+
+	/**
+	 * Init classes.
+	 */
+	public function init() {
+		$this->customizer = new CLOSECLIENT_CUSTOMIZER();
+		$this->dynamic_css = new CLOSECLIENT_DYNAMIC_CSS();
 	}
 
 	/**

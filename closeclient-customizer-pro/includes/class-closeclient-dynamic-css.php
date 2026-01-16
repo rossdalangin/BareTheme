@@ -178,5 +178,3 @@ class CLOSECLIENT_DYNAMIC_CSS {
 		echo '<style type="text/css" id="closeclient-customizer-pro-dynamic-css">' . $css . '</style>';
 	}
 }
-
-new CLOSECLIENT_DYNAMIC_CSS();

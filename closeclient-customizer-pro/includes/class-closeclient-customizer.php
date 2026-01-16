@@ -173,12 +173,18 @@ class CLOSECLIENT_CUSTOMIZER {
 			) );
 
 			// Add Control.
-			$wp_customize->add_control( $id, array(
+			$control_args = array(
 				'label'    => $control['label'],
 				'section'  => 'closeclient_typography_section',
 				'settings' => $id,
 				'type'     => $control['type'],
-			) );
+			);
+
+			if ( ! empty( $control['choices'] ) ) {
+				$control_args['choices'] = $control['choices'];
+			}
+
+			$wp_customize->add_control( $id, $control_args );
 		}
 
 		// Add the Spacing Section.
@@ -780,5 +786,3 @@ class CLOSECLIENT_CUSTOMIZER {
         return array_map( 'absint', $input );
     }
 }
-
-new CLOSECLIENT_CUSTOMIZER();

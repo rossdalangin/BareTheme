@@ -24,8 +24,12 @@ class Multi_Select_Control extends WP_Customize_Control {
 			<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
 			<select <?php $this->link(); ?> multiple="multiple" style="height: 100%;">
 				<?php
+				$saved_values = $this->value();
+				if ( ! is_array( $saved_values ) ) {
+					$saved_values = array();
+				}
 				foreach ( $this->choices as $value => $label ) {
-					$selected = ( in_array( $value, $this->value() ) ) ? 'selected="selected"' : '';
+					$selected = in_array( $value, $saved_values ) ? 'selected="selected"' : '';
 					echo '<option value="' . esc_attr( $value ) . '"' . $selected . '>' . esc_html( $label ) . '</option>';
 				}
 				?>
