@@ -22,14 +22,14 @@ Text Domain: closeclient-agency-theme
 # Generic
 --------------------------------------------------------------*/
 body {
-	background-color: var(--ccd-bg-color, #FFFFFF);
-	color: var(--ccd-text-color, #333333);
-	font-family: var(--ccd-body-font-family, sans-serif);
-	font-size: var(--ccd-body-font-size, 1rem);
-	font-weight: var(--ccd-body-font-weight, 400);
-	line-height: var(--ccd-body-line-height, 1.6);
-	letter-spacing: var(--ccd-body-letter-spacing, 0);
-	text-transform: var(--ccd-body-text-transform, none);
+	background-color: var(--ccd-bg-color);
+	color: var(--ccd-text-color);
+	font-family: var(--ccd-body-font-family);
+	font-size: var(--ccd-body-font-size);
+	font-weight: var(--ccd-body-font-weight);
+	line-height: var(--ccd-body-line-height);
+	letter-spacing: var(--ccd-body-letter-spacing);
+	text-transform: var(--ccd-body-text-transform);
 }
 
 a {
@@ -56,6 +56,14 @@ h1 {
 
 h2 {
 	font-size: var(--ccd-h2-font-size, 2rem);
+}
+
+h3 {
+	font-size: var(--ccd-h3-font-size, 1.75rem);
+}
+
+h4 {
+	font-size: var(--ccd-h4-font-size, 1.5rem);
 }
 
 /*--------------------------------------------------------------
@@ -128,7 +136,7 @@ h2 {
     text-align: center;
     margin-top: 2rem;
     padding-top: 2rem;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--ccd-border-color, #ddd);
 }
 
 /*--------------------------------------------------------------
@@ -137,9 +145,9 @@ h2 {
 .menu-toggle {
     display: none;
     background: none;
-    border: 1px solid;
-    padding: 0.5em 1em;
-    border-radius: 3px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
 @media (max-width: 1024px) {
@@ -155,8 +163,10 @@ h2 {
         top: 100%;
         left: 0;
         width: 100%;
-        background: var(--mobile-menu-bg-color, #fff);
+    background: var(--mobile-menu-bg-color);
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+    border-top: 1px solid var(--ccd-border-color);
     }
     .main-navigation.toggled-on li {
         display: block;
@@ -165,9 +175,13 @@ h2 {
     }
     .main-navigation.toggled-on a {
         display: block;
-        padding: 1em;
-        border-bottom: 1px solid #eee;
+    padding: 1rem 2rem;
         color: var(--mobile-menu-link-color);
+    transition: background-color 0.3s;
+}
+
+.main-navigation.toggled-on a:hover {
+    background-color: rgba(0,0,0,0.05);
     }
 
     .footer-widgets-container {
@@ -180,10 +194,10 @@ h2 {
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: var(--ccd-h1-font-size);
     }
     h2 {
-        font-size: 1.75rem;
+        font-size: var(--ccd-h2-font-size);
     }
 }
 
@@ -225,7 +239,7 @@ h2 {
 }
 
 .hero-subheading {
-    font-size: 1.2rem;
+    font-size: var(--ccd-body-font-size, 1.2rem);
     color: var(--ccd-text-color);
 }
 
@@ -269,14 +283,14 @@ h2 {
 
 .testimonial-quote {
     text-align: center;
-    font-size: 1.5rem;
+    font-size: var(--ccd-h4-font-size, 1.5rem);
     font-style: italic;
 }
 
 .testimonial-quote cite {
     display: block;
     margin-top: 1rem;
-    font-size: 1rem;
+    font-size: var(--ccd-body-font-size, 1rem);
     font-style: normal;
 }
 

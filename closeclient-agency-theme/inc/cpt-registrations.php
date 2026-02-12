@@ -99,5 +99,34 @@ function closeclient_agency_theme_register_cpts() {
         'capability_type'       => 'page',
     );
     register_post_type( 'gallery', $gallery_args );
+
+    // Team CPT
+    $team_labels = array(
+        'name'                  => _x( 'Team', 'Post Type General Name', 'closeclient-agency-theme' ),
+        'singular_name'         => _x( 'Team Member', 'Post Type Singular Name', 'closeclient-agency-theme' ),
+        'menu_name'             => __( 'Team', 'closeclient-agency-theme' ),
+        'all_items'             => __( 'All Team Members', 'closeclient-agency-theme' ),
+        'add_new_item'          => __( 'Add New Team Member', 'closeclient-agency-theme' ),
+    );
+    $team_args = array(
+        'label'                 => __( 'Team Member', 'closeclient-agency-theme' ),
+        'description'           => __( 'Team members', 'closeclient-agency-theme' ),
+        'labels'                => $team_labels,
+        'supports'              => array( 'title', 'editor', 'thumbnail' ),
+        'hierarchical'          => false,
+        'public'                => true,
+        'show_ui'               => true,
+        'show_in_menu'          => true,
+        'menu_position'         => 8,
+        'menu_icon'             => 'dashicons-groups',
+        'show_in_admin_bar'     => true,
+        'show_in_nav_menus'     => true,
+        'can_export'            => true,
+        'has_archive'           => true,
+        'exclude_from_search'   => false,
+        'publicly_queryable'    => true,
+        'capability_type'       => 'page',
+    );
+    register_post_type( 'team', $team_args );
 }
 add_action( 'init', 'closeclient_agency_theme_register_cpts', 0 );

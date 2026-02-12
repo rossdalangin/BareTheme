@@ -59,12 +59,14 @@ class CLOSECLIENT_DYNAMIC_CSS {
 
 		// Get color settings
 		$color_settings = array(
-			'ccd_text_color'        => '--ccd-text-color',
-			'ccd_bg_color'          => '--ccd-bg-color',
-			'ccd_brand_primary'     => '--ccd-brand-primary',
-			'ccd_brand_secondary'   => '--ccd-brand-secondary',
-			'ccd_link_color'        => '--ccd-link-color',
-			'ccd_link_hover_color'  => '--ccd-link-hover-color',
+			'ccd_text_color'         => '--ccd-text-color',
+			'ccd_bg_color'           => '--ccd-bg-color',
+			'ccd_brand_primary'      => '--ccd-brand-primary',
+			'ccd_brand_secondary'    => '--ccd-brand-secondary',
+			'ccd_link_color'         => '--ccd-link-color',
+			'ccd_link_hover_color'   => '--ccd-link-hover-color',
+			'mobile_menu_bg_color'   => '--mobile-menu-bg-color',
+			'mobile_menu_link_color' => '--mobile-menu-link-color',
 		);
 
 		foreach ( $color_settings as $setting => $variable ) {

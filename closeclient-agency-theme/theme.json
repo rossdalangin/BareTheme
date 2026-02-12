@@ -3,55 +3,109 @@
 	"version": 2,
 	"settings": {
 		"layout": {
-			"contentSize": "800px",
-			"wideSize": "1200px"
+			"contentSize": "var(--ccd-container-width-default)",
+			"wideSize": "var(--ccd-container-width-wide)"
 		},
 		"color": {
 			"palette": [
 				{
 					"slug": "foreground",
-					"color": "#000000",
+					"color": "var(--ccd-text-color)",
 					"name": "Foreground"
 				},
 				{
 					"slug": "background",
-					"color": "#FFFFFF",
+					"color": "var(--ccd-bg-color)",
 					"name": "Background"
 				},
 				{
 					"slug": "primary",
-					"color": "#0073e6",
+					"color": "var(--ccd-brand-primary)",
 					"name": "Primary"
+				},
+				{
+					"slug": "secondary",
+					"color": "var(--ccd-brand-secondary)",
+					"name": "Secondary"
 				}
 			]
 		},
 		"typography": {
+			"fontFamilies": [
+				{
+					"fontFamily": "var(--ccd-body-font-family)",
+					"slug": "body",
+					"name": "Body"
+				},
+				{
+					"fontFamily": "var(--ccd-heading-font-family)",
+					"slug": "heading",
+					"name": "Heading"
+				}
+			],
 			"fontSizes": [
 				{
-					"slug": "small",
-					"size": "1rem",
-					"name": "Small"
+					"slug": "body",
+					"size": "var(--ccd-body-font-size)",
+					"name": "Body"
 				},
 				{
-					"slug": "medium",
-					"size": "1.25rem",
-					"name": "Medium"
+					"slug": "h1",
+					"size": "var(--ccd-h1-font-size)",
+					"name": "H1"
 				},
 				{
-					"slug": "large",
-					"size": "1.5rem",
-					"name": "Large"
+					"slug": "h2",
+					"size": "var(--ccd-h2-font-size)",
+					"name": "H2"
+				},
+				{
+					"slug": "h3",
+					"size": "var(--ccd-h3-font-size)",
+					"name": "H3"
+				},
+				{
+					"slug": "h4",
+					"size": "var(--ccd-h4-font-size)",
+					"name": "H4"
 				}
 			]
 		}
 	},
 	"styles": {
 		"color": {
-			"text": "var(--wp--preset--color--foreground)",
-			"background": "var(--wp--preset--color--background)"
+			"text": "var(--ccd-text-color)",
+			"background": "var(--ccd-bg-color)"
 		},
 		"typography": {
-			"fontSize": "var(--wp--preset--font-size--medium)"
+			"fontFamily": "var(--ccd-body-font-family)",
+			"fontSize": "var(--ccd-body-font-size)"
+		},
+		"elements": {
+			"h1": {
+				"typography": {
+					"fontFamily": "var(--ccd-heading-font-family)",
+					"fontSize": "var(--ccd-h1-font-size)"
+				}
+			},
+			"h2": {
+				"typography": {
+					"fontFamily": "var(--ccd-heading-font-family)",
+					"fontSize": "var(--ccd-h2-font-size)"
+				}
+			},
+			"h3": {
+				"typography": {
+					"fontFamily": "var(--ccd-heading-font-family)",
+					"fontSize": "var(--ccd-h3-font-size)"
+				}
+			},
+			"h4": {
+				"typography": {
+					"fontFamily": "var(--ccd-heading-font-family)",
+					"fontSize": "var(--ccd-h4-font-size)"
+				}
+			}
 		}
 	},
 	"customTemplates": [],

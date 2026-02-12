@@ -15,18 +15,28 @@ get_header();
     <div class="page-section team-section">
         <h2 class="section-heading"><?php echo esc_html( get_theme_mod( 'about_us_team_heading', 'Meet Our Team' ) ); ?></h2>
         <div class="team-grid">
-            <?php for ( $i = 1; $i <= 3; $i++ ) : ?>
-                <div class="team-member">
-                    <?php
-                    $image_url = get_theme_mod( "about_us_team_member_{$i}_image" );
-                    if ( $image_url ) :
+            <?php
+            $args = array(
+                'post_type'      => 'team',
+                'posts_per_page' => -1,
+            );
+            $team_query = new WP_Query( $args );
+            if ( $team_query->have_posts() ) :
+                while ( $team_query->have_posts() ) :
+                    $team_query->the_post();
                     ?>
-                        <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php echo esc_attr( get_theme_mod( "about_us_team_member_{$i}_name" ) ); ?>" class="team-member-image"/>
-                    <?php endif; ?>
-                    <h4 class="team-member-name"><?php echo esc_html( get_theme_mod( "about_us_team_member_{$i}_name", "Team Member {$i}" ) ); ?></h4>
-                    <p class="team-member-title"><?php echo esc_html( get_theme_mod( "about_us_team_member_{$i}_title", "Title" ) ); ?></p>
-                </div>
-            <?php endfor; ?>
+                    <div class="team-member">
+                        <?php if ( has_post_thumbnail() ) : ?>
+                            <?php the_post_thumbnail( 'thumbnail', array( 'class' => 'team-member-image' ) ); ?>
+                        <?php endif; ?>
+                        <h4 class="team-member-name"><?php the_title(); ?></h4>
+                        <div class="team-member-title"><?php the_content(); ?></div>
+                    </div>
+                <?php
+                endwhile;
+                wp_reset_postdata();
+            endif;
+            ?>
         </div>
     </div>
 
