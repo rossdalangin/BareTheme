@@ -64,27 +64,30 @@ class CLOSECLIENT_CUSTOMIZER {
 	public function register_customize_settings( $wp_customize ) {
 		// == Theme Options Panel ==
         $wp_customize->add_panel( 'closeclient_theme_options_panel', array(
-            'title'    => __( 'Theme Options', 'closeclient-customizer-pro' ),
-            'priority' => 10,
+            'title'       => __( 'Theme Options', 'closeclient-customizer-pro' ),
+            'description' => __( 'Global settings for your website design system, including colors, typography, and layout.', 'closeclient-customizer-pro' ),
+            'priority'    => 10,
         ) );
 
 		// Global Design System Section
         $wp_customize->add_section( 'closeclient_global_design_section', array(
-            'title' => __( 'Global Design System', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_theme_options_panel',
+            'title'       => __( 'Global Design System', 'closeclient-customizer-pro' ),
+            'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Core design tokens that govern the overall look and feel.', 'closeclient-customizer-pro' ),
         ) );
 
 		// Add the Colors Section.
 		$wp_customize->add_section( 'closeclient_colors_section', array(
 			'title'       => __( 'Colors', 'closeclient-customizer-pro' ),
-			'panel'     => 'closeclient_theme_options_panel',
+			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Manage your brand colors. These are used throughout the theme to maintain consistency.', 'closeclient-customizer-pro' ),
 		) );
 
 		// Define Color Controls.
 		$color_controls = array(
 			'ccd_text_color' => array(
 				'label'   => __( 'Text Color', 'closeclient-customizer-pro' ),
-				'default' => '#333333',
+				'default' => '#2D3436',
 			),
 			'ccd_bg_color' => array(
 				'label'   => __( 'Background Color', 'closeclient-customizer-pro' ),
@@ -92,19 +95,19 @@ class CLOSECLIENT_CUSTOMIZER {
 			),
 			'ccd_brand_primary' => array(
 				'label'   => __( 'Brand Primary', 'closeclient-customizer-pro' ),
-				'default' => '#6B7A8F',
+				'default' => '#0A2B4C',
 			),
 			'ccd_brand_secondary' => array(
 				'label'   => __( 'Brand Secondary', 'closeclient-customizer-pro' ),
-				'default' => '#1D2D44',
-			),
-			'ccd_link_color' => array(
-				'label' => __( 'Link Color', 'closeclient-customizer-pro' ),
 				'default' => '#6B7A8F',
 			),
+			'ccd_link_color' => array(
+				'label'   => __( 'Link Color', 'closeclient-customizer-pro' ),
+				'default' => '#0A2B4C',
+			),
 			'ccd_link_hover_color' => array(
-				'label' => __( 'Link Hover Color', 'closeclient-customizer-pro' ),
-				'default' => '#1D2D44',
+				'label'   => __( 'Link Hover Color', 'closeclient-customizer-pro' ),
+				'default' => '#D9A066',
 			),
 		);
 
@@ -128,6 +131,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_typography_section', array(
 			'title'       => __( 'Typography', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Control the fonts and sizing for your content. We recommend using complementary serif and sans-serif fonts.', 'closeclient-customizer-pro' ),
 		) );
 
 		// Define Typography Controls
@@ -250,6 +254,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_spacing_section', array(
 			'title'       => __( 'Spacing', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Manage the white space in your layout. Consistent spacing creates a professional feel.', 'closeclient-customizer-pro' ),
 		) );
 
 		// Define Spacing Controls
@@ -310,6 +315,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_borders_section', array(
 			'title'       => __( 'Borders & Radius', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Customize the borders and corner roundness of elements like buttons and cards.', 'closeclient-customizer-pro' ),
 		) );
 
 		// Define Border Controls.
@@ -331,7 +337,7 @@ class CLOSECLIENT_CUSTOMIZER {
 			),
 			'ccd_border_color' => array(
 				'label'   => __( 'Border Color', 'closeclient-customizer-pro' ),
-				'default' => '#cccccc',
+				'default' => '#E0E0E0',
 			),
 			'ccd_border_radius_s' => array(
 				'label'   => __( 'Small Radius (rem)', 'closeclient-customizer-pro' ),
@@ -388,6 +394,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_shadows_section', array(
 			'title'       => __( 'Shadows', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Adjust the depth of elements using box shadows. Subtle shadows add a modern touch.', 'closeclient-customizer-pro' ),
 		) );
 
 		// Define Shadow Controls.
@@ -400,12 +407,12 @@ class CLOSECLIENT_CUSTOMIZER {
 			'ccd_shadow_offset_y' => array(
 				'label'   => __( 'Offset Y (px)', 'closeclient-customizer-pro' ),
 				'type'    => 'number',
-				'default' => 2,
+				'default' => 4,
 			),
 			'ccd_shadow_blur' => array(
 				'label'   => __( 'Blur (px)', 'closeclient-customizer-pro' ),
 				'type'    => 'number',
-				'default' => 10,
+				'default' => 20,
 			),
 			'ccd_shadow_spread' => array(
 				'label'   => __( 'Spread (px)', 'closeclient-customizer-pro' ),
@@ -414,7 +421,7 @@ class CLOSECLIENT_CUSTOMIZER {
 			),
 			'ccd_shadow_color' => array(
 				'label'   => __( 'Shadow Color', 'closeclient-customizer-pro' ),
-				'default' => 'rgba(0,0,0,0.1)',
+				'default' => 'rgba(0,0,0,0.08)',
 			),
 		);
 
@@ -449,6 +456,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_layout_section', array(
 			'title'       => __( 'Layout', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Configure the container widths for your site content.', 'closeclient-customizer-pro' ),
 		) );
 
 		// Define Layout Controls.
@@ -487,6 +495,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_buttons_section', array(
 			'title'       => __( 'Buttons', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Style your primary and secondary action buttons.', 'closeclient-customizer-pro' ),
 		) );
 
 		// -- Primary Button Controls --
@@ -502,7 +511,7 @@ class CLOSECLIENT_CUSTOMIZER {
 			'ccd_primary_btn_text_color' => array( 'label' => __( 'Text Color', 'closeclient-customizer-pro' ), 'default' => '#FFFFFF', 'type' => 'color' ),
 			'ccd_primary_btn_padding_y' => array( 'label' => __( 'Padding Y (rem)', 'closeclient-customizer-pro' ), 'default' => 0.8, 'type' => 'number' ),
 			'ccd_primary_btn_padding_x' => array( 'label' => __( 'Padding X (rem)', 'closeclient-customizer-pro' ), 'default' => 2, 'type' => 'number' ),
-			'ccd_primary_btn_border_radius' => array( 'label' => __( 'Border Radius (rem)', 'closeclient-customizer-pro' ), 'default' => 0.3, 'type' => 'number' ),
+			'ccd_primary_btn_border_radius' => array( 'label' => __( 'Border Radius (rem)', 'closeclient-customizer-pro' ), 'default' => 0.25, 'type' => 'number' ),
 		);
 
 		foreach ( $primary_button_controls as $id => $control ) {
@@ -529,7 +538,7 @@ class CLOSECLIENT_CUSTOMIZER {
 			'ccd_secondary_btn_text_color' => array( 'label' => __( 'Text Color', 'closeclient-customizer-pro' ), 'default' => '#333333', 'type' => 'color' ),
 			'ccd_secondary_btn_padding_y' => array( 'label' => __( 'Padding Y (rem)', 'closeclient-customizer-pro' ), 'default' => 0.75, 'type' => 'number' ),
 			'ccd_secondary_btn_padding_x' => array( 'label' => __( 'Padding X (rem)', 'closeclient-customizer-pro' ), 'default' => 1.5, 'type' => 'number' ),
-			'ccd_secondary_btn_border_radius' => array( 'label' => __( 'Border Radius (rem)', 'closeclient-customizer-pro' ), 'default' => 0.5, 'type' => 'number' ),
+			'ccd_secondary_btn_border_radius' => array( 'label' => __( 'Border Radius (rem)', 'closeclient-customizer-pro' ), 'default' => 0.25, 'type' => 'number' ),
 		);
 
 		foreach ( $secondary_button_controls as $id => $control ) {
@@ -547,19 +556,21 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_forms_section', array(
 			'title'       => __( 'Forms', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Customize the appearance of form inputs and labels.', 'closeclient-customizer-pro' ),
 		) );
 
 		// Add the Section Backgrounds Section.
 		$wp_customize->add_section( 'closeclient_section_backgrounds_section', array(
 			'title'       => __( 'Section Backgrounds', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Global settings for page section backgrounds.', 'closeclient-customizer-pro' ),
 		) );
 
 		// -- Section Background Controls --
 		$section_background_controls = array(
 			'ccd_section_bg_color' => array( 'label' => __( 'Background Color', 'closeclient-customizer-pro' ), 'default' => '#FFFFFF', 'type' => 'color' ),
 			'ccd_section_bg_image' => array( 'label' => __( 'Background Image', 'closeclient-customizer-pro' ), 'type' => 'image' ),
-			'ccd_section_bg_overlay_color' => array( 'label' => __( 'Overlay Color', 'closeclient-customizer-pro' ), 'default' => 'rgba(0,0,0,0.5)', 'type' => 'color' ),
+			'ccd_section_bg_overlay_color' => array( 'label' => __( 'Overlay Color', 'closeclient-customizer-pro' ), 'default' => 'rgba(0,0,0,0.05)', 'type' => 'color' ),
 		);
 
 		foreach ( $section_background_controls as $id => $control ) {
@@ -580,6 +591,7 @@ class CLOSECLIENT_CUSTOMIZER {
 		$wp_customize->add_section( 'closeclient_dark_mode_section', array(
 			'title'       => __( 'Dark Mode', 'closeclient-customizer-pro' ),
 			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Settings for the optional Dark Mode experience.', 'closeclient-customizer-pro' ),
 		) );
 
 		// -- Dark Mode Controls --
@@ -596,8 +608,8 @@ class CLOSECLIENT_CUSTOMIZER {
 		) );
 
 		$dark_mode_color_controls = array(
-			'ccd_dark_mode_text_color' => array( 'label' => __( 'Text Color', 'closeclient-customizer-pro' ), 'default' => '#FFFFFF', 'type' => 'color' ),
-			'ccd_dark_mode_bg_color'   => array( 'label' => __( 'Background Color', 'closeclient-customizer-pro' ), 'default' => '#121212', 'type' => 'color' ),
+			'ccd_dark_mode_text_color' => array( 'label' => __( 'Text Color', 'closeclient-customizer-pro' ), 'default' => '#FDFDFF', 'type' => 'color' ),
+			'ccd_dark_mode_bg_color'   => array( 'label' => __( 'Background Color', 'closeclient-customizer-pro' ), 'default' => '#1A1C1D', 'type' => 'color' ),
 		);
 
 		foreach ( $dark_mode_color_controls as $id => $control ) {
@@ -611,10 +623,10 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		// -- Form Controls --
 		$form_controls = array(
-			'ccd_form_input_bg_color' => array( 'label' => __( 'Input BG Color', 'closeclient-customizer-pro' ), 'default' => '#f9f9f9', 'type' => 'color' ),
-			'ccd_form_input_text_color' => array( 'label' => __( 'Input Text Color', 'closeclient-customizer-pro' ), 'default' => '#333333', 'type' => 'color' ),
-			'ccd_form_input_border_color' => array( 'label' => __( 'Input Border Color', 'closeclient-customizer-pro' ), 'default' => '#cccccc', 'type' => 'color' ),
-			'ccd_form_input_padding_y' => array( 'label' => __( 'Input Padding Y (rem)', 'closeclient-customizer-pro' ), 'default' => 0.5, 'type' => 'number' ),
+			'ccd_form_input_bg_color' => array( 'label' => __( 'Input BG Color', 'closeclient-customizer-pro' ), 'default' => '#F9F9F9', 'type' => 'color' ),
+			'ccd_form_input_text_color' => array( 'label' => __( 'Input Text Color', 'closeclient-customizer-pro' ), 'default' => '#2D3436', 'type' => 'color' ),
+			'ccd_form_input_border_color' => array( 'label' => __( 'Input Border Color', 'closeclient-customizer-pro' ), 'default' => '#E0E0E0', 'type' => 'color' ),
+			'ccd_form_input_padding_y' => array( 'label' => __( 'Input Padding Y (rem)', 'closeclient-customizer-pro' ), 'default' => 0.7, 'type' => 'number' ),
 			'ccd_form_input_padding_x' => array( 'label' => __( 'Input Padding X (rem)', 'closeclient-customizer-pro' ), 'default' => 1, 'type' => 'number' ),
 			'ccd_form_input_border_radius' => array( 'label' => __( 'Input Border Radius (rem)', 'closeclient-customizer-pro' ), 'default' => 0.25, 'type' => 'number' ),
 			'ccd_form_label_font_size' => array( 'label' => __( 'Label Font Size (rem)', 'closeclient-customizer-pro' ), 'default' => 0.9, 'type' => 'number' ),
@@ -633,8 +645,9 @@ class CLOSECLIENT_CUSTOMIZER {
 
 		// Header Section
 		$wp_customize->add_section( 'closeclient_header_section', array(
-			'title' => __( 'Header', 'closeclient-customizer-pro' ),
-			'panel' => 'closeclient_theme_options_panel',
+			'title'       => __( 'Header', 'closeclient-customizer-pro' ),
+			'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Manage your website header layout and behavior.', 'closeclient-customizer-pro' ),
 		) );
 
 		$wp_customize->add_setting( 'closeclient_header_sticky', array(
@@ -643,9 +656,9 @@ class CLOSECLIENT_CUSTOMIZER {
 			'transport'         => 'postMessage'
 		) );
 		$wp_customize->add_control( 'closeclient_header_sticky', array(
-			'label' => __( 'Enable Sticky Header', 'closeclient-customizer-pro' ),
+			'label'   => __( 'Enable Sticky Header', 'closeclient-customizer-pro' ),
 			'section' => 'closeclient_header_section',
-			'type' => 'checkbox',
+			'type'    => 'checkbox',
 		) );
 
 		$wp_customize->add_setting( 'closeclient_header_transparent', array(
@@ -654,9 +667,9 @@ class CLOSECLIENT_CUSTOMIZER {
 			'transport'         => 'postMessage'
 		) );
 		$wp_customize->add_control( 'closeclient_header_transparent', array(
-			'label' => __( 'Enable Transparent Header', 'closeclient-customizer-pro' ),
+			'label'   => __( 'Enable Transparent Header', 'closeclient-customizer-pro' ),
 			'section' => 'closeclient_header_section',
-			'type' => 'checkbox',
+			'type'    => 'checkbox',
 		) );
 
         // -- Header CTA Button --
@@ -667,8 +680,9 @@ class CLOSECLIENT_CUSTOMIZER {
 
         // Mobile Menu Section
         $wp_customize->add_section( 'closeclient_mobile_menu_section', array(
-            'title' => __( 'Mobile Menu', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_theme_options_panel',
+            'title'       => __( 'Mobile Menu', 'closeclient-customizer-pro' ),
+            'panel'       => 'closeclient_theme_options_panel',
+            'description' => __( 'Styling for the mobile navigation drawer.', 'closeclient-customizer-pro' ),
         ) );
 
         $wp_customize->add_setting( 'mobile_menu_bg_color', array( 'default' => '#FFFFFF', 'sanitize_callback' => 'sanitize_hex_color' ) );
@@ -684,14 +698,16 @@ class CLOSECLIENT_CUSTOMIZER {
 
         // Page Content Panel
         $wp_customize->add_panel( 'closeclient_page_content_panel', array(
-            'title'    => __( 'Page Content', 'closeclient-customizer-pro' ),
-            'priority' => 20,
+            'title'       => __( 'Page Content', 'closeclient-customizer-pro' ),
+            'description' => __( 'Manage the content and layout of specific pages like Homepage and About Us.', 'closeclient-customizer-pro' ),
+            'priority'    => 20,
         ) );
 
         // Homepage Section
         $wp_customize->add_section( 'closeclient_homepage_section', array(
-            'title' => __( 'Homepage', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'title'       => __( 'Homepage', 'closeclient-customizer-pro' ),
+            'panel'       => 'closeclient_page_content_panel',
+            'description' => __( 'Customize your homepage sections, headings, and calls to action.', 'closeclient-customizer-pro' ),
         ) );
 
         // -- Homepage Sections Order --
@@ -745,8 +761,9 @@ class CLOSECLIENT_CUSTOMIZER {
 
         // About Us Section
         $wp_customize->add_section( 'closeclient_about_us_section', array(
-            'title' => __( 'About Us', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'title'       => __( 'About Us', 'closeclient-customizer-pro' ),
+            'panel'       => 'closeclient_page_content_panel',
+            'description' => __( 'Manage the content for your About Us page.', 'closeclient-customizer-pro' ),
         ) );
 
         // -- Team Section --
@@ -755,16 +772,18 @@ class CLOSECLIENT_CUSTOMIZER {
 
         // Services Section
         $wp_customize->add_section( 'closeclient_services_section', array(
-            'title' => __( 'Services', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'title'       => __( 'Services', 'closeclient-customizer-pro' ),
+            'panel'       => 'closeclient_page_content_panel',
+            'description' => __( 'Customize the appearance of your services archive.', 'closeclient-customizer-pro' ),
         ) );
         $wp_customize->add_setting( 'services_archive_title', array( 'default' => __( 'Our Services', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
         $wp_customize->add_control( 'services_archive_title', array( 'label' => __( 'Services Archive Title', 'closeclient-customizer-pro' ), 'section' => 'closeclient_services_section', 'type' => 'text' ) );
 
         // Testimonials Section
         $wp_customize->add_section( 'closeclient_testimonials_section', array(
-            'title' => __( 'Testimonials', 'closeclient-customizer-pro' ),
-            'panel' => 'closeclient_page_content_panel',
+            'title'       => __( 'Testimonials', 'closeclient-customizer-pro' ),
+            'panel'       => 'closeclient_page_content_panel',
+            'description' => __( 'Customize the appearance of your testimonials archive.', 'closeclient-customizer-pro' ),
         ) );
         $wp_customize->add_setting( 'testimonials_archive_title', array( 'default' => __( 'What Our Clients Say', 'closeclient-customizer-pro' ), 'sanitize_callback' => 'sanitize_text_field' ) );
         $wp_customize->add_control( 'testimonials_archive_title', array( 'label' => __( 'Testimonials Archive Title', 'closeclient-customizer-pro' ), 'section' => 'closeclient_testimonials_section', 'type' => 'text' ) );
